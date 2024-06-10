@@ -35,12 +35,41 @@
             <p>
                 <label for="centro">Centro </label>
                 <select
-                    id=""
+                    id="centro"
                 >
-                    <option>Star Wars</option>
-                    <option>Vanilla Sky</option>
-                    <option>Atomic Blonde</option>
+                    <option>Oficina central</option>
+                    <option>Chamontoya</option>
+                    <option>Cuacuila</option>
+                    <option>Zacatlán</option>
                 </select>
+            </p>
+            <p>
+                <label for="tema">Tema </label>
+                <select
+                    id="tema"
+                >
+                    <option>Tema 1</option>
+                    <option>Tema 2</option>
+                    <option>Tema 3</option>
+                    <option>Tema 4</option>
+                </select>
+            </p>
+            <p>
+                <label for="des">Descripción </label>
+                <input
+                  id="des"
+                  v-model="des"
+                  type="text"
+                  name="des"
+                >
+            </p>
+            <p>
+                <label for="file">Evidencias  </label>
+                <input
+                    type="file"
+                    id="fileInput"
+                    @change="handleFileUpload"
+                >
             </p>
             <p>
                 <input
