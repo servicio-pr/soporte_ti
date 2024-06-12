@@ -1,5 +1,5 @@
 <template>
-    <div class="nuevo_ticket">
+    <div class="container-md col">
         <h3>Cree una nueva solicitud de ayuda</h3>
         <p>Por favor llene el siguiente formulario para poder comenzar a resolver su inconveniente. </p>
         <form id="nuevo"

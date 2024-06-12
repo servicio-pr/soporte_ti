@@ -1,15 +1,8 @@
 <template>
   <div class="task">
     <h3>Tareas de los analistas</h3>
-    <table class="task">
+    <table class="task table-primary">
     <thead>
-      <tr>
-        <th class="uno">
-          <p>Aquí aparece la información de los tickets</p>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
       <tr>
         <td>Analista</td>
         <td>Número de ticket</td>
@@ -24,7 +17,9 @@
         <td>Lugar</td>
         <td>Descripción</td>
         <td>Evidencias</td>
-       </tr>
+      </tr>
+    </thead>
+    <tbody>
        <tr>
           <td>1</td>
           <td>2</td>

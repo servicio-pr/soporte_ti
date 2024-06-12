@@ -1,14 +1,14 @@
 <template>
-  <div class="home">
-    <div class="tickets">
-      <div class="nuevo_tickets">
+  <div class="container text-center" >
+    <div class="row">
+      <div class="col">
         <Nuevoticket/>
       </div>
-      <div class="estatus_tickets">
+      <div class="col">
         <Estatusticket/>
       </div>
     </div>
-    <div class="sesion">
+    <div class="row">
       <Iniciosesion/>
     </div>
   </div>

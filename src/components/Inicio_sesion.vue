@@ -1,8 +1,8 @@
 <template>
-    <div class="nuevo_ticket">
+    <div class="nuevo_ticket container">
         <h3>Inicie sesión para acceder a todas las funciones</h3>
         <p>Ingrese los datos necesarios para iniciar sesión, una vez lo haga podrá visualizar información relevante respecto a los tickets.</p>
-        <form id="nuevo"
+        <form id="sesion"
         @submit="checkForm"
         accion ="hhtps://vuejs.org/"
         method = "post"

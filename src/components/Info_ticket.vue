@@ -34,15 +34,8 @@
                 >
             </p>
     </form>
-    <table id="info">
+    <table class="table-primary" id="info">
       <thead>
-          <tr>
-              <th class="uno">
-                <p>Información del ticket #01234567</p>
-              </th>
-          </tr>
-      </thead>
-      <tbody>
           <tr>
             <td>Número ticket</td>
             <td>Estatus</td>
@@ -55,6 +48,8 @@
             <td>Descripción</td>
             <td>Fecha de la última respuesta</td>
           </tr>
+      </thead>
+      <tbody>
           <tr>
             <td>1</td>
             <td>2</td>
@@ -69,15 +64,8 @@
         </tr>
       </tbody>
     </table>
-    <table id="respuestas">
+    <table id="respuestas table">
       <thead>
-          <tr>
-              <th class="uno">
-                <p>Respuestas del ticket #01234567</p>
-              </th>
-          </tr>
-      </thead>
-      <tbody>
           <tr>
             <td>Usuario</td>
             <td>Tipo usuario</td>
@@ -85,6 +73,8 @@
             <td>Respuesta</td>
             <td>Evidencias</td>
           </tr>
+      </thead>
+      <tbody>
           <tr>
             <td>1</td>
             <td>2</td>

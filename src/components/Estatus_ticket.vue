@@ -1,5 +1,5 @@
 <template>
-  <div class="Estatus_ticket">
+  <div class="container-md">
     <h3>Seguimiento de ticket</h3>
     <p>Ingrese el número de ticket para poder validar el estatus del mismo.</p>
     <p>También puede dar seguimiento ingresando su correo electrónico con el que realizo la solicitud.</p>
@@ -42,5 +42,5 @@
 <script>
 </script>
 
-<style scoped lang="scss">
+<style>
 </style>
