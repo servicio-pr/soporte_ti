@@ -1,6 +1,7 @@
 <template>
     <div class="nuevo_ticket">
-        <h1>Inicie sesión para acceder a todas las funciones</h1>
+        <h3>Inicie sesión para acceder a todas las funciones</h3>
+        <p>Ingrese los datos necesarios para iniciar sesión, una vez lo haga podrá visualizar información relevante respecto a los tickets.</p>
         <form id="nuevo"
         @submit="checkForm"
         accion ="hhtps://vuejs.org/"
@@ -13,6 +14,7 @@
                   v-model="usuario"
                   type="text"
                   name="usuario"
+                  placeholder="email@fundacionamparo.org.mx"
                 >
             </p>
             <p>
@@ -21,21 +23,23 @@
                   id="pass"
                   v-model="pass"
                   type="text"
-                  name="pass">
+                  name="pass"
+                  placeholder="******"
+                  >
             </p>
             <p>
                 <label for="centro">Tipo usuario </label>
                 <select
                     id=""
                 >
-                    <option>Direccion</option>
+                    <option>Dirección</option>
                     <option>Analista</option>
                 </select>
             </p>
             <p>
                 <input
                   type="submit"
-                  value="Enviar"
+                  value="Iniciar sesión"
                 >
             </p>
         </form>

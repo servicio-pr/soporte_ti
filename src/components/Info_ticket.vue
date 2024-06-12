@@ -1,9 +1,7 @@
 <template>
   <div class="Info_ticket">
-    <h1>Información de ticket</h1>
-    // Se generara un bucle para obtener la info del historial
-    <p>Aqui aparece la informacion del ticket</p>
-    <form id="nuevo"
+    <h3>Información de ticket</h3>
+    <form id="info"
         @submit="checkForm"
         accion ="hhtps://vuejs.org/"
         method = "post"
@@ -15,6 +13,7 @@
                   v-model="ticket"
                   type="text"
                   name="ticket"
+                  placeholder="#01234567"
                 >
             </p>
             <p>
@@ -24,7 +23,9 @@
                   v-model="email"
                   type="text"
                   name="email"
-                  min="0">
+                  min="0"
+                  placeholder="email@fundacionamparo.org.mx"
+                  >
             </p>
             <p>
                 <input
@@ -32,24 +33,27 @@
                   value="Buscar"
                 >
             </p>
-        </form>
-    <table>
+    </form>
+    <table id="info">
       <thead>
           <tr>
               <th class="uno">
-                <p>inicio</p>
+                <p>Información del ticket #01234567</p>
               </th>
           </tr>
       </thead>
       <tbody>
           <tr>
-              <td>Usuario</td>
-              <td>Mes</td>
-              <td>Area TI</td>
-              <td>Fecha de inicio</td>
-              <td>Tiempo invertido</td>
-              <td>KPI</td>
-              <td>Cumple</td>
+            <td>Número ticket</td>
+            <td>Estatus</td>
+            <td>Usuario</td>
+            <td>Analista</td>
+            <td>Fecha de solicitud</td>
+            <td>Centro</td>
+            <td>Fecha de inicio</td>
+            <td>Tiempo invertido</td>
+            <td>Descripción</td>
+            <td>Fecha de la última respuesta</td>
           </tr>
           <tr>
             <td>1</td>
@@ -59,9 +63,75 @@
             <td>5</td>
             <td>6</td>
             <td>7</td>
+            <td>8</td>
+            <td>9</td>
+            <td>10</td>
         </tr>
       </tbody>
-  </table>
+    </table>
+    <table id="respuestas">
+      <thead>
+          <tr>
+              <th class="uno">
+                <p>Respuestas del ticket #01234567</p>
+              </th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>Usuario</td>
+            <td>Tipo usuario</td>
+            <td>Fecha de respuesta</td>
+            <td>Respuesta</td>
+            <td>Evidencias</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+        </tr>
+      </tbody>
+    </table>
+    <form id="resp"
+        @submit="checkForm"
+        accion ="hhtps://vuejs.org/"
+        method = "post"
+        >
+        <p>
+          <label for="resp">Respuesta:  </label>
+          <input
+            id="resp"
+            v-model="resp"
+            type="text"
+            name="resp"
+          >
+      </p>
+      <p>
+        <label for="file">Evidencias:  </label>
+        <input
+            type="file"
+            id="fileInput"
+            @change="handleFileUpload"
+        >
+    </p>
+    <p>
+      <label for="centro">Cambiar estatus </label>
+      <select
+          id="estatus"
+      >
+          <option>Proceso</option>
+          <option>Terminado</option>
+      </select>
+  </p>
+    <p>
+      <input
+        type="submit"
+        value="Enviar respuesta"
+      >
+  </p>
+    </form>
   </div>
 </template>
 

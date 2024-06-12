@@ -1,6 +1,7 @@
 <template>
     <div class="nuevo_ticket">
-        <h1>Cree una nueva solicitud de ayuda</h1>
+        <h3>Cree una nueva solicitud de ayuda</h3>
+        <p>Por favor llene el siguiente formulario para poder comenzar a resolver su inconveniente. </p>
         <form id="nuevo"
         @submit="checkForm"
         accion ="hhtps://vuejs.org/"
@@ -13,6 +14,7 @@
                   v-model="name"
                   type="text"
                   name="name"
+                  placeholder="José Perez Leon"
                 >
             </p>
             <p>
@@ -22,15 +24,17 @@
                   v-model="email"
                   type="text"
                   name="email"
-                  min="0">
+                  min="0"
+                  placeholder="email@fundacionamparo.org.mx">
             </p>
             <p>
-                <label for="number">Numero telefónico </label>
+                <label for="number">Número telefónico </label>
                 <input
                   id="number"
                   v-model="number"
                   type="int"
-                  name="number">
+                  name="number"
+                  placeholder="+52 5566778899">
             </p>
             <p>
                 <label for="centro">Centro </label>
@@ -55,12 +59,24 @@
                 </select>
             </p>
             <p>
+                <label for="subtema">Subtema </label>
+                <select
+                    id="subtema"
+                >
+                    <option>Sub Tema 1</option>
+                    <option>Sub Tema 2</option>
+                    <option>Sub Tema 3</option>
+                    <option>Sub Tema 4</option>
+                </select>
+            </p>
+            <p>
                 <label for="des">Descripción </label>
                 <input
                   id="des"
                   v-model="des"
                   type="text"
                   name="des"
+                  placeholder="Descripción detallada del problema"
                 >
             </p>
             <p>
