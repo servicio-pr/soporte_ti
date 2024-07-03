@@ -1,15 +1,29 @@
 <template>
-  <div class="container text-center" >
+  <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <Nuevoticket/>
+        <div class="card -sm-6 mb-3 mb-sm-0">
+          <div class="card-body">
+            <Nuevoticket/>
+          </div>
+        </div>
       </div>
       <div class="col">
-        <Estatusticket/>
+        <div class="card mb-3">
+          <div class="card-body">
+            <Estatusticket/>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <Iniciosesion/>
+    <div class="row justify-content-center">
+      <div class="col-8">
+        <div class="card w-80">
+          <div class="card-body">
+            <Iniciosesion/>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

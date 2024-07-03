@@ -1,0 +1,9 @@
+Comandos
+
+intalar dependencias npm no compatibles
+--legacy-per-deps --force
+
+
+para el back-end
+
+express, sequelize, mysql2 and body-parser
