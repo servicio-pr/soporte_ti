@@ -1,11 +1,14 @@
 <template>
-    <div class="container-md bs-body-bg">
+    <div class="container-fluid bs-body-bg">
       <div class="row">
         <div class="col">
-          <div class="card mb-3">
+          <div class="card text-bg-dark border dark-border-subtle rounded-4">
             <div class="card-body">
               <h3>Evidencias</h3>
-              <table class="table">
+              <button @click="count++">
+                You clicked me {{ count }} times.
+              </button>
+              <table class="table-dark">
                 <thead>
                   <tr>
                     <td>Evidencia</td>
@@ -27,8 +30,9 @@
       </div>
     </div>
 </template>
-
-<script>
+<script setup>
+import { ref } from 'vue'
+const count = ref(0)
 </script>
 
 <style>

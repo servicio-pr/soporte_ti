@@ -1,11 +1,11 @@
 <template>
-  <div class="container-md bs-body-bg">
+  <div class="container-fluid bs-body-bg">
     <div class="row">
       <div class="col">
-        <div class="card mb-3">
+        <div class="card text-center text-bg-dark border dark-border-subtle rounded-4">
           <h3>Tareas de los analistas</h3>
           <div class="card-body row">
-            <table class="table">
+            <table  class="table-dark">
               <thead>
                 <tr>
                   <td>Analista</td>

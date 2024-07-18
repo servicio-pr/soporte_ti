@@ -1,9 +1,9 @@
 <template>
-  <nav id="navbar" class="navbar nav-fill navbar-expand-lg bg-body-tertiary">
+  <nav id="navbar" class="navbar nav-fill navbar-expand-lg bg-dark border dark-border-subtle rounded-5">
     <div class="container-fluid justify-content-center">
       <div class="row">
         <div class="col-2">
-          <a class="navbar-brand ml-3" href="#">
+          <a class="nav-link" href="#">
             <router-link to="/">Inicio</router-link>
           </a>
         </div>
@@ -15,7 +15,7 @@
         <div class="col-6">
           <a class="">
             <form class="d-flex" role="search">
-              <input class="form-control s-nv" type="search" placeholder="Número de ticket" aria-label="Search">
+              <input class="form-control s-nv text-bg-dark" type="search" placeholder="Número de ticket" aria-label="Search" pattern="\d{8,8}" required>
               <button class="btn btn-outline-primary b-nv" type="submit">Buscar ticket</button>
             </form>
           </a>
@@ -37,24 +37,23 @@
 #app {
   text-align: center;
   font: 1rem/1.5 var(--bs-font-sans-serif);
+  background-color: black;
 }
-#is {
-  margin-top: 10px;
-  padding: 20px;
-}
+::placeholder {
+  color:white;
+ }
 .container {
   display: flex;
   flex-direction: column;
-  padding: 20px;
 }
 .row {
-  margin: 3px;
+  margin: 2px;
+  padding: 2px;
 }
-.col {
-  margin-top: 5px;
+#navbar {
+  margin: 2px;
 }
-.s-nv, .b-nv {
-  margin-left : 5px;
-  margin-right: 5px;
+.max-width-row {
+  max-width: 70%; /* Tamaño máximo del div de inicio de sesion */
 }
 </style>

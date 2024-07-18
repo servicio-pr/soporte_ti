@@ -1,152 +1,150 @@
 <template>
-    <div class="container-md bs-body-bg">
+    <div class="container-fuid bs-body-bg">
         <div class="row justify-content-md-center">
             <div class="col">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h3>Cree una nueva solicitud de ayuda</h3>
+                <div class="card text-bg-dark border dark-border-subtle rounded-4">
+                    <h2 class="card-title">Nuevo ticket</h2>
+                    <div class="card-header">
                         <p>Por favor llene el siguiente formulario para poder comenzar a resolver su inconveniente. </p>
-                    <form id="nuevo"
-                    @submit="checkForm"
+                    </div>
+                    <div class="card-body">
+                    <form id="ticket"
+                    @submit.prevent="NuevoTicketForm"
                     accion ="hhtps://vuejs.org/"
                     method = "post"
                     >
-                        <div class="row input-group-text">
-                            <label class="col form-label" for="name">Nombre </label>
+                        <div class="row justify-content-center input-group-text text-bg-dark">
+                            <label class="col form-label" for="nombre">Nombre </label>
                             <input
-                            id="name"
-                            class="col form-control"
-                            v-model="name"
+                            id="ticketNombre"
+                            class="col form-control text-bg-dark"
+                            v-model="Ticket.nombre"
                             type="text"
                             name="name"
                             placeholder="José Perez Leon"
+                            required
                             >
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text">
+                                <span for="nomHelpInline" class="scrollable-text form-text text-bg-dark">
                                     Ingrese su nombre completo
                                 </span>
                             </div>
                         </div>
-                        <div class="row input-group-text">
+                        <div class="row justify-content-center input-group-text text-bg-dark">
                             <label class="col form-label" for="email">Correo </label>
                             <input
                             id="email"
-                            class="col form-control"
-                            v-model="email"
+                            class="col form-control text-bg-dark"
+                            v-model="Ticket.email"
                             type="text"
                             name="email"
                             min="0"
-                            placeholder="email@fundacionamparo.org.mx">
+                            placeholder="email@fundacionamparo.org.mx"
+                            required
+                            >
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text">
+                                <span id="passwordHelpInline" class="form-text text-bg-dark">
                                     Ingrese su correo laboral
                                 </span>
                             </div>
                         </div>
-                        <div class="row input-group-text">
-                            <label class="col form-label" for="number">Número telefónico </label>
+                        <div class="row justify-content-center input-group-text text-bg-dark">
+                            <label class="col form-label" for="telefono">Número telefónico </label>
                             <input
                             id="number"
-                            class="col form-control"
-                            v-model="number"
+                            class="col form-control text-bg-dark"
+                            v-model="Ticket.telefono"
                             type="int"
                             name="number"
-                            placeholder="+52 5566778899">
+                            placeholder="+52 5566778899"
+                            required
+                            >
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text">
+                                <span id="passwordHelpInline" class="form-text text-bg-dark">
                                     Número telefónico de contacto
                                 </span>
                             </div>
                         </div>
-                        <div class="row input-group-text">
+                        <div class="row input-group-text text-bg-dark">
                             <label class="col form-label" for="centro">Centro </label>
                             <select
-                                id="centro"
-                                class="col form-select"
+                                id="centros"
+                                class="col form-select text-bg-dark"
+                                v-model="Ticket.centroSelect"
+                                required
+                                for="centros"
                             >
-                                <option>Oficina central</option>
-                                <option>Chamontoya</option>
-                                <option>Cuacuila</option>
-                                <option>Zacatlán</option>
+                            <option v-for="centro in centros" :key="centro.id" :value="centro.nombre">
+                                {{ centro.nombre }}
+                            </option>
                             </select>
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text">
-                                    Lugar donde se precenta el problema
+                                <span id="passwordHelpInline" class="form-text text-bg-dark">
+                                    Lugar donde se presenta el problema
                                 </span>
                             </div>
                         </div>
-                        <div class="row input-group-text">
+                        <div class="row input-group-text text-bg-dark">
                             <label class="col form-label" for="tema">Tema </label>
                             <select
-                                id="tema"
-                                class="col form-select"
+                                id="temas"
+                                class="col form-select text-bg-dark"
+                                v-model="Ticket.temaSelect"
+                                required
+                                for="temas"
                             >
-                                <option>Tema 1</option>
-                                <option>Tema 2</option>
-                                <option>Tema 3</option>
-                                <option>Tema 4</option>
+                            <option v-for="tema in temas" :key="tema.id" :value="tema.nombre">
+                                {{ tema.nombre }}
+                            </option>
                             </select>
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text">
+                                <span id="passwordHelpInline" class="form-text text-bg-dark">
                                     Seleccione el tema a tratar
                                 </span>
                             </div>
                         </div>
-                        <div class="row input-group-text">
-                            <label class="col form-label" for="subtema">Subtema </label>
-                            <select
-                                id="subtema"
-                                class="col form-select"
-                            >
-                                <option>Sub Tema 1</option>
-                                <option>Sub Tema 2</option>
-                                <option>Sub Tema 3</option>
-                                <option>Sub Tema 4</option>
-                            </select>
-                            <div class="col">
-                                <span id="passwordHelpInline" class="form-text">
-                                    Selecciona el subtema
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row input-group-text">
+                        <div class="row input-group-text text-bg-dark">
                             <label class="col form-label" for="des">Descripción </label>
-                            <div class="col-auto">
-                                <span id="passwordHelpInline" class="form-text">
+                            <div class="row">
+                                <input
+                                id="descripcion"
+                                class="form-control text-bg-dark"
+                                v-model="Ticket.descripcion"
+                                type="text"
+                                name="des"
+                                min="1"
+                                placeholder="Descripción detallada del problema"
+                                required
+                                >
+                            </div>
+                            <div class="col">
+                                <span id="passwordHelpInline" class="form-text text-bg-dark">
                                     Describa el problema lo más preciso y detalladamente posible.
                                 </span>
                             </div>
                         </div>
-                        <div class="row">
-                            <input
-                            id="des"
-                            class="form-control"
-                            v-model="des"
-                            type="text"
-                            name="des"
-                            placeholder="Descripción detallada del problema"
-                            >
-                        </div>
-                        <div class="row input-group-text">
+                        <div class="row input-group-text text-bg-dark">
                             <label class="col form-label" for="file">Evidencias  </label>
                             <input
-                                type="file"
-                                class="col form-control"
+                                type="text"
+                                class="col form-control text-bg-dark"
                                 id="fileInput"
-                                @change="handleFileUpload"
-                            >
+                                v-model="Ticket.evidencias"
+                                >
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text">
+                                <span id="passwordHelpInline" class="form-text text-bg-dark">
                                     Seleccione el archivo que nos pueda ayudar a visualizar el problema.
                                 </span>
                             </div>
                         </div>
-                        <div class="row input-group-text">
-                            <input
+                        <div class="row input-group-text text-bg-dark">
+                            <button
                             class="col btn btn-outline-primary"
                             type="submit"
                             value="Enviar"
                             >
+                            Crear nuevo ticket
+                            </button>
                         </div>
                     </form>
                     </div>
@@ -157,7 +155,58 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 
+export default {
+  name: 'Nuevo_ticket',
+  data () {
+    return {
+      Ticket: {
+        nombre: '',
+        email: '',
+        telefono: '',
+        centroSelect: '',
+        temaSelect: '',
+        descripcion: '',
+        evidencias: ''
+      }
+    }
+  },
+  computed: {
+    ...mapGetters('tema', ['temas']),
+    ...mapGetters('centro', ['centros'])
+  },
+  methods: {
+    ...mapActions('tema', ['fetchTemas']),
+    ...mapActions('centro', ['fetchCentros']),
+    ...mapActions('ticket', ['nuevoTicket']),
+    async NuevoTicketForm () {
+      try {
+        await this.nuevoTicket(this.Ticket)
+        this.Ticket = {
+          nombre: '',
+          email: '',
+          telefono: '',
+          centroSelect: '',
+          temaSelect: '',
+          descripcion: '',
+          evidencias: ''
+        }
+      } catch (error) {
+        console.error('Error al crear el ticket:', error)
+      }
+    }
+  },
+  mounted () {
+    try {
+      this.fetchTemas()
+      this.fetchCentros()
+      console.log('ok fetch Temas y centro', this.temas)
+    } catch (error) {
+      console.log('Error fetch temas y centro', error)
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

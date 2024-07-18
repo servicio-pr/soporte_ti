@@ -1,21 +1,18 @@
 <template>
-  <div class="container-md bs-body-bg">
-    <h1 class="h2">Iniciar sesión</h1>
+  <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <div class="card mb-3">
-          <div class="">
+        <div class="">
             <Sesion/>
-          </div>
-          <div class="">
+        </div>
+        <div class="">
             <Analista/>
-          </div>
-          <div class="">
+        </div>
+        <div class="">
             <Direccion/>
-          </div>
-          <div class="">
+        </div>
+        <div class="">
             <Evidencias/>
-          </div>
         </div>
       </div>
     </div>

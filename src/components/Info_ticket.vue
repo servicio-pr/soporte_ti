@@ -1,13 +1,13 @@
 <template>
-  <div class="container-md bs-body-bg">
+  <div class="container-fluid bs-body-bg">
     <div class="row">
       <div class="col">
         <div class="row">
           <div class="col">
-            <div class="card mb-3">
+            <div class="card text-bg-dark border dark-border-subtle rounded-4">
               <h3>Información del ticket número: </h3>
               <div class="card-body">
-                <table class="table" id="info">
+                <table  class="table-dark" id="info">
                   <thead>
                       <tr>
                         <td>Número ticket</td>
@@ -25,15 +25,6 @@
                   <tbody>
                       <tr>
                         <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>7</td>
-                        <td>8</td>
-                        <td>9</td>
-                        <td>10</td>
                     </tr>
                   </tbody>
                 </table>
@@ -43,9 +34,9 @@
         </div>
         <div class="row">
           <div class="col">
-            <div class="card mb-3">
+            <div class="card text-bg-dark border dark-border-subtle rounded-4">
               <div class="card-body">
-                <table class="table">
+                <table  class="table-dark">
                   <thead>
                       <tr>
                         <td>Usuario</td>
@@ -71,7 +62,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <div class="card mb-3">
+            <div class="card text-bg-dark border dark-border-subtle rounded-4">
               <div class="card-body">
                 <form id="resp"
                   @submit="checkForm"
@@ -80,30 +71,30 @@
                   >
                   <div class="row">
                     <div class="col-sm-10">
-                      <div class="row input-group-text">
+                      <div class="row input-group-text text-bg-dark">
                         <label class="col form-label" for="resp">Respuesta:  </label>
                         <input
                           id="resp"
-                          class="col form-control"
+                          class="col form-control text-bg-dark"
                           v-model="resp"
                           type="text"
                           name="resp"
                         >
                       </div>
-                      <div class="row input-group-text">
-                      <label class="col form-label" for="file">Evidencias:  </label>
+                      <div class="row input-group-text text-bg-dark">
+                      <label class="col form-label " for="file">Evidencias:  </label>
                       <input
                           type="file"
-                          class="col form-control"
+                          class="col form-control text-bg-dark"
                           id="fileInput"
                           @change="handleFileUpload"
                       >
                       </div>
-                      <div class="row input-group-text">
+                      <div class="row input-group-text text-bg-dark">
                     <label class="col form-label" for="centro">Cambiar estatus </label>
                     <select
                         id="estatus"
-                        class="input-group-text col"
+                        class="input-group-text col text-bg-dark"
                     >
                         <option>Proceso</option>
                         <option>Terminado</option>
@@ -111,7 +102,7 @@
                       </div>
                     </div>
                     <div class="col-sm-2">
-                      <div class="row input-group-text">
+                      <div class="row input-group-text text-bg-dark">
                         <input
                         class="col-auto btn btn-outline-primary"
                           type="submit"
