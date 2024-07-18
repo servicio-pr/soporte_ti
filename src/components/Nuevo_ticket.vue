@@ -54,7 +54,7 @@
                             id="number"
                             class="col form-control text-bg-dark"
                             v-model="Ticket.telefono"
-                            type="int"
+                            type="text"
                             name="number"
                             placeholder="+52 5566778899"
                             required

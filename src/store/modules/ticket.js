@@ -19,7 +19,17 @@ const actions = {
   async fetchTicketId ({ commit }, ticket) {
     try {
       console.log('-----------antes api-------', ticket)
-      const response = await axios.get('http://localhost:3000/tickets/getone', ticket)
+      const response = await axios.get('http://localhost:3000/tickets/getoneById', ticket)
+      commit('SetTickets', response.data)
+      console.log('reponse: desues api', response)
+    } catch (error) {
+      console.error('Failed to search ticket id:', error)
+    }
+  },
+  async fetchTicketEmail ({ commit }, ticket) {
+    try {
+      console.log('-----------antes api-------', ticket)
+      const response = await axios.get('http://localhost:3000/tickets/getoneById', ticket)
       commit('SetTickets', response.data)
       console.log('reponse: desues api', response)
     } catch (error) {
