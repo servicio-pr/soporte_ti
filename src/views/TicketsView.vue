@@ -1,9 +1,13 @@
 <template>
-  <div class="about">
-    <h2>Tickets</h2>
-    <Nuevoticket/>
-    <Estatusticket/>
-    <Infoticket/>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <h2>Tickets</h2>
+        <Nuevoticket/>
+        <Estatusticket/>
+        <Infoticket/>
+      </div>
+    </div>
   </div>
 </template>
 

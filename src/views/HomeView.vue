@@ -1,15 +1,17 @@
 <template>
-  <div class="container text-center" >
+  <div class="container-fluid">
     <div class="row">
       <div class="col">
         <Nuevoticket/>
       </div>
       <div class="col">
-        <Estatusticket/>
+            <Estatusticket/>
       </div>
     </div>
     <div class="row">
-      <Iniciosesion/>
+      <div class="col">
+            <Iniciosesion/>
+      </div>
     </div>
   </div>
 </template>

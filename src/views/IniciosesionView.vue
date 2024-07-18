@@ -1,10 +1,21 @@
 <template>
-  <div class="Estatus_ticket">
-    <h1>Iniciar sesión</h1>
-    <Sesion/>
-    <Analista/>
-    <Direccion/>
-    <Evidencias/>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="">
+            <Sesion/>
+        </div>
+        <div class="">
+            <Analista/>
+        </div>
+        <div class="">
+            <Direccion/>
+        </div>
+        <div class="">
+            <Evidencias/>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
