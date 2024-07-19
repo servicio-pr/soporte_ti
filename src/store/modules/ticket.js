@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import api from '../../config/api'
 const state = {
   Ticket: [],
   Tickets: {}
@@ -10,18 +10,18 @@ const getters = {
 const actions = {
   async nuevoTicket ({ commit }, ticket) {
     try {
-      const response = await axios.post('http://localhost:3000/tickets/createTicket', ticket)
+      const response = await axios.post(api.url + api.tickets.createTicket, ticket)
       commit('InsertTicket', response)
     } catch (error) {
       console.error('Failed to add ticket:', error)
     }
   },
-  async fetchTicketId ({ commit }, ticket) {
+  async fetchTicketId ({ commit }, TicketId) {
     try {
-      console.log('-----------antes api-------', ticket)
-      const response = await axios.get('http://localhost:3000/tickets/getoneById', ticket)
-      commit('SetTickets', response.data)
+      console.log('-----------antes api-------', TicketId)
+      const response = await axios.get(api.url + api.tickets.getOneById + TicketId)
       console.log('reponse: desues api', response)
+      commit('SetTickets', response.data)
     } catch (error) {
       console.error('Failed to search ticket id:', error)
     }
@@ -29,7 +29,7 @@ const actions = {
   async fetchTicketEmail ({ commit }, ticket) {
     try {
       console.log('-----------antes api-------', ticket)
-      const response = await axios.get('http://localhost:3000/tickets/getoneById', ticket)
+      const response = await axios.get('http://localhost:3000/tickets/getOneByEmail/:{{ ticket }}')
       commit('SetTickets', response.data)
       console.log('reponse: desues api', response)
     } catch (error) {

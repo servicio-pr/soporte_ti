@@ -89,7 +89,7 @@ export default {
     ...mapActions('ticket', ['fetchTicketId']),
     async BuscarTicket () {
       try {
-        await this.fetchTicketId(this.ticketEstatus)
+        await this.fetchTicketId(this.ticketEstatus.id)
         this.ticketEstatus = {
           id: '',
           email: ''
