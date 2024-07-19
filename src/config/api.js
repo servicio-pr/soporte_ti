@@ -5,6 +5,7 @@ export default {
     getall: '/tickets/getall',
     getOneById: '/tickets/getOneById/',
     getOneByEmail: '/tickets/getOneByEmail/',
-    createTicket: '/tickets/createTicket'
+    createTicket: '/tickets/createTicket',
+    nuevaRespuesta: '/tickets/nuevaRespuesta'
   }
 }

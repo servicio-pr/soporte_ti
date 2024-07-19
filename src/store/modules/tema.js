@@ -6,7 +6,7 @@ const state = {
 const actions = {
   async fetchTemas ({ commit }) {
     try {
-      const response = await axios.get('http://localhost:3000/tema')
+      const response = await axios.get('http://localhost:8000/tema')
       commit('setTemas', response.data)
     } catch (error) {
       console.error('Error fetching tema:', error)

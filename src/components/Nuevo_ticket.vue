@@ -201,7 +201,6 @@ export default {
     try {
       this.fetchTemas()
       this.fetchCentros()
-      console.log('ok fetch Temas y centro', this.temas)
     } catch (error) {
       console.log('Error fetch temas y centro', error)
     }
