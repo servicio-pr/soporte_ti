@@ -6,5 +6,13 @@ export default {
     getOneById: '/tickets/getOneById/',
     getOneByEmail: '/tickets/getOneByEmail/',
     createTicket: '/tickets/createTicket'
+  },
+  centro: {
+    default: '/',
+    getall: '/centro/getall'
+  },
+  tema: {
+    default: '/',
+    getall: '/tema/getall'
   }
 }

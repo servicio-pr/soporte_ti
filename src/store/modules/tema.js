@@ -1,4 +1,5 @@
 import axios from 'axios'
+import api from '../../config/api'
 
 const state = {
   temas: []
@@ -6,7 +7,7 @@ const state = {
 const actions = {
   async fetchTemas ({ commit }) {
     try {
-      const response = await axios.get('http://localhost:3000/tema')
+      const response = await axios.get(api.url + api.tema.getall)
       commit('setTemas', response.data)
     } catch (error) {
       console.error('Error fetching tema:', error)

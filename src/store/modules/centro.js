@@ -1,4 +1,5 @@
 import axios from 'axios'
+import api from '../../config/api'
 
 const state = {
   centros: [],
@@ -7,7 +8,7 @@ const state = {
 const actions = {
   async fetchCentros ({ commit }) {
     try {
-      const response = await axios.get('http://localhost:3000/centro')
+      const response = await axios.get(api.url + api.centro.getall)
       commit('setCentros', response.data)
     } catch (error) {
       console.error('Error fetching centro:', error)
