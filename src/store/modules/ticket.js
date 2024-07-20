@@ -1,11 +1,9 @@
 import axios from 'axios'
 import api from '../../config/api'
 const state = {
-  Ticket: [],
-  Tickets: {}
-}
-const getters = {
-  Tickets: state => state.Tickets
+  Tickets: [],
+  Ticket: {},
+  respuesta: {}
 }
 const actions = {
   async nuevoTicket ({ commit }, ticket) {
@@ -18,9 +16,8 @@ const actions = {
   },
   async fetchTicketId ({ commit }, TicketId) {
     try {
-      console.log('-----------antes api-------', TicketId)
       const response = await axios.get(api.url + api.tickets.getOneById + TicketId)
-      console.log('reponse: desues api', response)
+      console.log('reponse: desues api', response.data)
       commit('SetTickets', response.data)
     } catch (error) {
       console.error('Failed to search ticket id:', error)
@@ -35,15 +32,29 @@ const actions = {
     } catch (error) {
       console.error('Failed to search ticket id:', error)
     }
+  },
+  async nuevaRespuesta ({ commit }, respuesta) {
+    try {
+      const response = await axios.post(api.url + api.tickets.nuevaRespuesta + respuesta)
+      commit('InsertRespuesta', response)
+    } catch (error) {
+      console.log('Errro insertando respuesta', error)
+    }
   }
 }
 const mutations = {
   InsertTicket: (state, response) => {
     state.Ticket.push(response)
   },
-  SetTickets: (state, Tickets) => {
-    state.Tickets = Tickets
+  SetTickets: (state, ticket) => {
+    state.Tickets = ticket
+  },
+  InsertRespuesta: (state, res) => {
+    state.respuesta.push(res)
   }
+}
+const getters = {
+  Tickets: state => state.Tickets
 }
 export default {
   namespaced: true,
