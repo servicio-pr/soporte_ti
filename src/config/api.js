@@ -5,19 +5,19 @@ export default {
     getall: '/tickets/getall',
     getOneById: '/tickets/getOneById/',
     getOneByEmail: '/tickets/getOneByEmail/',
-<<<<<<< HEAD
-    createTicket: '/tickets/createTicket'
+    createTicket: '/tickets/createTicket',
+    nuevaRespuesta: '/tickets/nuevaRespuesta'
   },
   centro: {
-    default: '/',
+    default: '/centro',
     getall: '/centro/getall'
   },
   tema: {
-    default: '/',
+    default: '/tema',
     getall: '/tema/getall'
-=======
-    createTicket: '/tickets/createTicket',
-    nuevaRespuesta: '/tickets/nuevaRespuesta'
->>>>>>> d0aea5575eed16002c00f8952060536a939df0a0
+  },
+  inicioSesion: {
+    default: '/login',
+    login: '/login/iniciarSesion'
   }
 }

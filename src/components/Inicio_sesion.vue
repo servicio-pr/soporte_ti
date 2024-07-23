@@ -7,18 +7,18 @@
                         <h2>Iniciar sesión</h2>
                         <p>Ingrese los datos necesarios para iniciar sesión, una vez lo haga podrá visualizar información relevante respecto a los tickets.</p>
                         <form id="sesion"
-                        @submit="checkForm"
+                        @submit.prevent="inicioSesion"
                         accion ="hhtps://vuejs.org/"
                         method = "post"
                         >
                             <div class="row input-group-text text-bg-dark">
-                                <label class="col form-label" for="usuario">Usuario </label>
+                                <label class="col form-label" for="usuario">Correo </label>
                                 <input
-                                id="usuario"
+                                id="correo"
                                 class="col form-control text-bg-dark"
-                                v-model="usuario"
+                                v-model="User.correo"
                                 type="text"
-                                name="usuario"
+                                name="correo"
                                 placeholder="email@fundacionamparo.org.mx"
                                 >
                                 <div class="col">
@@ -32,7 +32,7 @@
                                 <input
                                 id="pass"
                                 class="col form-control text-bg-dark"
-                                v-model="pass"
+                                v-model="User.pass"
                                 type="text"
                                 name="pass"
                                 placeholder="******"
@@ -48,6 +48,7 @@
                                 <select
                                     id=""
                                     class="col form-select text-bg-dark"
+                                    v-model="User.selectTipoUsuario"
                                 >
                                     <option>Dirección</option>
                                     <option>Analista</option>
@@ -74,7 +75,36 @@
 </template>
 
 <script>
+// import axios from 'axios';
+import { mapActions } from 'vuex'
 
+export default {
+  name: 'Inicio_sesion',
+  data () {
+    return {
+      User: {
+        correo: '',
+        pass: '',
+        selectTipoUsuario: ''
+      }
+    }
+  },
+  methods: {
+    ...mapActions('inicioSesion', ['iniciarSesion']),
+    async inicioSesion () {
+      try {
+        await this.iniciarSesion(this.User)
+        this.User = {
+          correo: '',
+          selectTipoUsuario: '',
+          pass: ''
+        }
+      } catch (error) {
+        console.error('Error al iniciar sesion:', error)
+      }
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
