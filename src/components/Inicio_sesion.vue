@@ -76,7 +76,7 @@
 
 <script>
 // import axios from 'axios';
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Inicio_sesion',
@@ -89,19 +89,36 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters('tema', ['temas']),
+    ...mapGetters('centro', ['centros'])
+  },
   methods: {
+    ...mapActions('tema', ['fetchTemas']),
+    ...mapActions('centro', ['fetchCentros']),
+    ...mapActions('inicioSesion', ['handleInicioSesion']),
     ...mapActions('inicioSesion', ['iniciarSesion']),
     async inicioSesion () {
       try {
-        await this.iniciarSesion(this.User)
+        const response = await this.iniciarSesion(this.User)
         this.User = {
           correo: '',
           selectTipoUsuario: '',
           pass: ''
         }
+        // console.log('Response:::', response)
+        const token = response.data.token
+        sessionStorage.setItem('token', token)
+        await this.handleInicioSesion()
+        // const user = response.data.user
+        // this.login(user)
       } catch (error) {
         console.error('Error al iniciar sesion:', error)
       }
+    },
+    async handleInicioSesion () {
+      await this.fetchTemas()
+      await this.fetchCentros()
     }
   }
 }

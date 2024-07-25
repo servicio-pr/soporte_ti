@@ -16,13 +16,19 @@
           <a class="">
             <form class="d-flex" role="search">
               <input class="form-control s-nv text-bg-dark" type="search" placeholder="Número de ticket" aria-label="Search" pattern="\d{8,8}" required>
-              <button class="btn btn-outline-primary b-nv" type="submit">Buscar ticket</button>
+              <button class="btn btn-outline-primary" type="submit">Buscar ticket</button>
             </form>
           </a>
         </div>
         <div class="col-2">
-          <a class="nav-link d-flex" href="#">
-            <router-link to="/sesion">Inicio de sesión</router-link>
+          <a class="nav-link d-flex text-bg-dark" href="#">
+            <div v-if="user">
+              Bienvenido, {{ user.nombre }}.
+              <button class="btn btn-outline-primary b-nv" @click="cerrarSesion">Cerrar sesión</button>
+            </div>
+            <div v-else>
+              <router-link to="/sesion">Inicio de sesión</router-link>
+            </div>
         </a>
         </div>
       </div>
@@ -32,6 +38,21 @@
     <router-view/>
   </div>
 </template>
+
+<script>
+import { mapState, mapActions } from 'vuex'
+
+export default {
+  methods: {
+    ...mapActions('inicioSesion', ['cerrarSesion'])
+  },
+  computed: {
+    ...mapState('inicioSesion', {
+      user: state => state.user
+    })
+  }
+}
+</script>
 
 <style lang="scss">
 #app {

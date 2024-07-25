@@ -88,10 +88,10 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+// import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'Nuevo_ticket',
+  name: 'kpi_ticket',
   data () {
     return {
       Tarea: {
@@ -100,38 +100,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('tema', ['temas']),
-    ...mapGetters('centro', ['centros'])
   },
   methods: {
-    ...mapActions('tema', ['fetchTemas']),
-    ...mapActions('centro', ['fetchCentros']),
-    ...mapActions('ticket', ['nuevoTicket']),
-    async NuevoTicketForm () {
-      try {
-        await this.nuevoTicket(this.Ticket)
-        this.Ticket = {
-          nombre: '',
-          email: '',
-          telefono: '',
-          centroSelect: '',
-          temaSelect: '',
-          descripcion: '',
-          evidencias: ''
-        }
-      } catch (error) {
-        console.error('Error al crear el ticket:', error)
-      }
-    }
   },
   mounted () {
-    try {
-      this.fetchTemas()
-      this.fetchCentros()
-      console.log('ok fetch Temas y centro', this.temas)
-    } catch (error) {
-      console.log('Error fetch temas y centro', error)
-    }
   }
 }
 </script>

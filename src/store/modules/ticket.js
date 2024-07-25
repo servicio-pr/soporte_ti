@@ -17,7 +17,7 @@ const actions = {
   async fetchTicketId ({ commit }, TicketId) {
     try {
       const response = await axios.get(api.url + api.tickets.getOneById + TicketId)
-      console.log('reponse: desues api', response.data)
+      // console.log('reponse: desues api', response.data)
       commit('SetTickets', response.data)
     } catch (error) {
       console.error('Failed to search ticket id:', error)
@@ -25,10 +25,10 @@ const actions = {
   },
   async fetchTicketEmail ({ commit }, ticket) {
     try {
-      console.log('-----------antes api-------', ticket)
+      // console.log('-----------antes api-------', ticket)
       const response = await axios.get('http://localhost:3000/tickets/getOneByEmail/:{{ ticket }}')
       commit('SetTickets', response.data)
-      console.log('reponse: desues api', response)
+      // console.log('reponse: desues api', response)
     } catch (error) {
       console.error('Failed to search ticket id:', error)
     }
@@ -38,19 +38,19 @@ const actions = {
       const response = await axios.post(api.url + api.tickets.nuevaRespuesta + respuesta)
       commit('InsertRespuesta', response)
     } catch (error) {
-      console.log('Errro insertando respuesta', error)
+      console.log('Error insertando respuesta', error)
     }
   }
 }
 const mutations = {
   InsertTicket: (state, response) => {
-    state.Ticket.push(response)
+    state.Ticket = (response)
   },
   SetTickets: (state, ticket) => {
     state.Tickets = ticket
   },
   InsertRespuesta: (state, res) => {
-    state.respuesta.push(res)
+    state.respuesta = (res)
   }
 }
 const getters = {

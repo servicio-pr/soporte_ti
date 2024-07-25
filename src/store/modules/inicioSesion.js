@@ -2,25 +2,32 @@ import axios from 'axios'
 import api from '../../config/api'
 
 const state = {
-  users: []
+  user: null
 }
 const actions = {
   async iniciarSesion ({ commit }, user) {
     try {
       const response = await axios.post(api.url + api.inicioSesion.login, user)
-      commit('setUser', response.data)
+      const usuario = response.data.user
+      // console.log('Response:::', response)
+      commit('setUser', usuario)
+      return response
     } catch (error) {
       console.error('Error Al iniciar sesion', error)
     }
+  },
+  cerrarSesion ({ commit }) {
+    sessionStorage.removeItem('token')
+    commit('setUser', null)
   }
 }
 const mutations = {
   setUser (state, usuario) {
-    state.users = usuario
+    state.user = usuario
   }
 }
 const getters = {
-  users: state => state.users
+  user: state => state.user
 }
 export default {
   namespaced: true,
