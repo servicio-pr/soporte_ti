@@ -2,15 +2,15 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <Nuevoticket/>
+        <Nuevoticket  v-if="isAuthenticated"/>
       </div>
       <div class="col">
-            <Estatusticket/>
+            <Estatusticket v-if="isAuthenticated"/>
       </div>
     </div>
     <div class="row">
       <div class="col">
-            <Iniciosesion/>
+          <Iniciosesion v-if="!isAuthenticated" />
       </div>
     </div>
   </div>
@@ -21,6 +21,7 @@
 import Nuevoticket from '@/components/Nuevo_ticket.vue'
 import Estatusticket from '@/components/Estatus_ticket.vue'
 import Iniciosesion from '@/components/Inicio_sesion.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'HomeView',
@@ -28,6 +29,11 @@ export default {
     Estatusticket,
     Nuevoticket,
     Iniciosesion
+  },
+  computed: {
+    ...mapState('inicioSesion', {
+      isAuthenticated: state => state.isAuthenticated
+    })
   }
 }
 </script>

@@ -2,7 +2,8 @@ import axios from 'axios'
 import api from '../../config/api'
 
 const state = {
-  user: null
+  user: null,
+  isAuthenticated: false
 }
 const actions = {
   async iniciarSesion ({ commit }, user) {
@@ -11,6 +12,7 @@ const actions = {
       const usuario = response.data.user
       // console.log('Response:::', response)
       commit('setUser', usuario)
+      commit('setAuthenticated', true)
       return response
     } catch (error) {
       console.error('Error Al iniciar sesion', error)
@@ -19,15 +21,20 @@ const actions = {
   cerrarSesion ({ commit }) {
     sessionStorage.removeItem('token')
     commit('setUser', null)
+    commit('setAuthenticated', false)
   }
 }
 const mutations = {
   setUser (state, usuario) {
     state.user = usuario
+  },
+  setAuthenticated (state, isAuthenticated) {
+    state.isAuthenticated = isAuthenticated
   }
 }
 const getters = {
-  user: state => state.user
+  user: state => state.user,
+  isAuthenticated: state => state.isAuthenticated
 }
 export default {
   namespaced: true,

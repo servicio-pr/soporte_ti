@@ -14,6 +14,18 @@ const actions = {
       console.error('Failed to add ticket:', error)
     }
   },
+  async fetchTickesByUser ({ commit }, userId) {
+    try {
+      const response = await axios.get(api.url + api.tickets.getOneByIdUser + userId)
+      // console.log('reponse: desues api', response.data)
+      if (!response) {
+        response.data = {}
+      }
+      commit('SetTickets', response.data)
+    } catch (error) {
+      console.error('Failed to search ticket id:', error)
+    }
+  },
   async fetchTicketId ({ commit }, TicketId) {
     try {
       const response = await axios.get(api.url + api.tickets.getOneById + TicketId)
@@ -44,7 +56,7 @@ const actions = {
 }
 const mutations = {
   InsertTicket: (state, response) => {
-    state.Ticket = (response)
+    state.Ticket = response
   },
   SetTickets: (state, ticket) => {
     state.Tickets = ticket

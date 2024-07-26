@@ -4,6 +4,7 @@ export default {
     default: '/',
     getall: '/tickets/getall',
     getOneById: '/tickets/getOneById/',
+    getOneByIdUser: '/tickets/getallbyUser/',
     getOneByEmail: '/tickets/getOneByEmail/',
     createTicket: '/tickets/createTicket',
     nuevaRespuesta: '/tickets/nuevaRespuesta'

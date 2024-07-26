@@ -4,17 +4,12 @@
       <div class="row">
         <div class="col-2">
           <a class="nav-link" href="#">
-            <router-link to="/">Inicio</router-link>
-          </a>
-        </div>
-        <div class="col-2">
-          <a class="nav-link" href="#">
-            <router-link to="/tickets">Tickets</router-link>
+            <router-link to="/tickets" :class="{ disabled: !isAuthenticated }">Tickets</router-link>
           </a>
         </div>
         <div class="col-6">
           <a class="">
-            <form class="d-flex" role="search">
+            <form class="d-flex" role="search" :class="{ disabled: !isAuthenticated }">
               <input class="form-control s-nv text-bg-dark" type="search" placeholder="Número de ticket" aria-label="Search" pattern="\d{8,8}" required>
               <button class="btn btn-outline-primary" type="submit">Buscar ticket</button>
             </form>
@@ -23,13 +18,19 @@
         <div class="col-2">
           <a class="nav-link d-flex text-bg-dark" href="#">
             <div v-if="user">
-              Bienvenido, {{ user.nombre }}.
-              <button class="btn btn-outline-primary b-nv" @click="cerrarSesion">Cerrar sesión</button>
+              <router-link to="/sesion">Bienvenido, {{ user.nombre }}</router-link>
             </div>
             <div v-else>
               <router-link to="/sesion">Inicio de sesión</router-link>
             </div>
         </a>
+        </div>
+        <div class="col-2">
+          <a class="nav-link" href="#">
+            <router-link to="/" v-if="user" :class="{ disabled: !isAuthenticated }">
+              <a @click="handleCerrarSesion" href="">Cerrar sesión</a>
+            </router-link>
+          </a>
         </div>
       </div>
     </div>
@@ -43,12 +44,25 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
+  name: 'Nuevo_ticket',
+  data () {
+    return {
+      Ticket: {
+        id: null
+      }
+    }
+  },
   methods: {
-    ...mapActions('inicioSesion', ['cerrarSesion'])
+    ...mapActions('inicioSesion', ['cerrarSesion']),
+    async handleCerrarSesion () {
+      await this.cerrarSesion()
+      this.$router.push('/sesion')
+    }
   },
   computed: {
     ...mapState('inicioSesion', {
-      user: state => state.user
+      user: state => state.user,
+      isAuthenticated: state => state.isAuthenticated
     })
   }
 }
@@ -76,5 +90,9 @@ export default {
 }
 .max-width-row {
   max-width: 70%; /* Tamaño máximo del div de inicio de sesion */
+}
+.disabled {
+  pointer-events: none;
+  color: grey;
 }
 </style>

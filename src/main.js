@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
-import jwtDecode from 'jwt-decode'
+// import jwtDecode from 'jwt-decode'
 
 axios.interceptors.request.use(
   (config) => {
@@ -18,15 +18,19 @@ axios.interceptors.request.use(
   }
 )
 
+/*
 const token = sessionStorage.getItem('token')
 if (token) {
   try {
+    console.log('Token: ', token)
     const decoded = jwtDecode(token)
-    store.commit('inicioSesion/setUser', decoded.user)
+    console.log('Token: ', decoded)
+    store.commit('inicioSesion/setUser', decoded)
   } catch (error) {
     console.error('Error al decodificar el token:', error)
     sessionStorage.removeItem('token')
   }
 }
+*/
 
 createApp(App).use(store).use(router).mount('#app')

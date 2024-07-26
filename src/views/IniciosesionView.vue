@@ -3,16 +3,10 @@
     <div class="row">
       <div class="col">
         <div class="">
-            <Sesion/>
+            <Sesion v-if="!isAuthenticated"/>
         </div>
-        <div class="">
-            <Analista/>
-        </div>
-        <div class="">
-            <Direccion/>
-        </div>
-        <div class="">
-            <Evidencias/>
+        <div>
+          <Perfil v-if="isAuthenticated"/>
         </div>
       </div>
     </div>
@@ -21,17 +15,20 @@
 
 <script>
 import Sesion from '@/components/Inicio_sesion.vue'
-import Analista from '@/components/Kpi_analista.vue'
-import Direccion from '@/components/Kpi_direccion.vue'
-import Evidencias from '@/components/Evidencias_ticket.vue'
+import Perfil from '@/components/Perfil_usuario.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'IniciosesionView',
   components: {
     Sesion,
-    Analista,
-    Direccion,
-    Evidencias
+    Perfil
+  },
+  computed: {
+    ...mapState('inicioSesion', {
+      user: state => state.user,
+      isAuthenticated: state => state.isAuthenticated
+    })
   }
 }
 </script>

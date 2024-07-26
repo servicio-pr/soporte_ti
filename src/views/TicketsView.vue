@@ -3,8 +3,9 @@
     <div class="row">
       <div class="col">
         <h2>Tickets</h2>
-        <Nuevoticket/>
-        <Estatusticket/>
+        <Nuevoticket v-if="isAuthenticated"/>
+        <Estatusticket v-if="isAuthenticated"/>
+        <Iniciosesion v-if="!isAuthenticated" />
       </div>
     </div>
   </div>
@@ -14,12 +15,20 @@
 // @ is an alias to /src
 import Nuevoticket from '@/components/Nuevo_ticket.vue'
 import Estatusticket from '@/components/Estatus_ticket.vue'
+import Iniciosesion from '@/components/Inicio_sesion.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'TicketsView',
   components: {
     Estatusticket,
-    Nuevoticket
+    Nuevoticket,
+    Iniciosesion
+  },
+  computed: {
+    ...mapState('inicioSesion', {
+      isAuthenticated: state => state.isAuthenticated
+    })
   }
 }
 </script>
