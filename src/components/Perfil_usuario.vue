@@ -13,13 +13,11 @@
                 <thead>
                   Tickets:
                 </thead>
-                <tbody v-if="Tickets">
+                <tbody v-if="Tickets!=null">
                   <tr v-for="ticket in Tickets" :key="ticket.id">
                     <td>{{ ticket.title }}</td>
                   </tr>
-                </tbody>
-                <tbody v-else>
-                  <tr>
+                  <tr v-esle>
                     <td>Aun no hay tickets.</td>
                   </tr>
                 </tbody>
@@ -31,22 +29,20 @@
     </div>
 </template>
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   methods: {
-    ...mapActions('ticket', ['fetchTickets'])
+    ...mapActions('ticket', ['fetchTickesByUser']),
+    async LoadTickets () {
+      const userId = this.user.id
+      console.log('uerId')
+      await this.$store.dispatch('fetchTickesByUser', userId)
+    }
   },
   computed: {
-    ...mapGetters('ticket', ['Tickets']),
-    ...mapState('inicioSesion', ['user'])
-  },
-  mounted () {
-    try {
-      this.fetchTickets()
-    } catch (error) {
-      console.log('Error fetch user y tickets', error)
-    }
+    ...mapState('inicioSesion', ['user']),
+    ...mapState('ticket', ['Tickets'])
   }
 }
 </script>

@@ -16,9 +16,10 @@ const actions = {
   },
   async fetchTickesByUser ({ commit }, userId) {
     try {
-      const response = await axios.get(api.url + api.tickets.getOneByIdUser + userId)
+      console.log('State Ticktes at fetchTickesByUser:', userId)
+      const response = await axios.get(api.url + api.tickets.getAllByIdUser + userId)
       // console.log('reponse: desues api', response.data)
-      if (!response) {
+      if (!response || !response.data) {
         response.data = {}
       }
       commit('SetTickets', response.data)

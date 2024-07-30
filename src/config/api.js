@@ -2,9 +2,9 @@ export default {
   url: 'http://localhost:8000',
   tickets: {
     default: '/',
-    getall: '/tickets/getall',
+    getAll: '/tickets/getall',
     getOneById: '/tickets/getOneById/',
-    getOneByIdUser: '/tickets/getallbyUser/',
+    getAllByIdUser: '/tickets/getallbyUser/',
     getOneByEmail: '/tickets/getOneByEmail/',
     createTicket: '/tickets/createTicket',
     nuevaRespuesta: '/tickets/nuevaRespuesta'

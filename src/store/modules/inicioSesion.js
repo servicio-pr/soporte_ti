@@ -2,7 +2,12 @@ import axios from 'axios'
 import api from '../../config/api'
 
 const state = {
-  user: null,
+  user: {
+    id: null,
+    nombre: null,
+    correo: null,
+    id_rol: null
+  },
   isAuthenticated: false
 }
 const actions = {
@@ -10,7 +15,6 @@ const actions = {
     try {
       const response = await axios.post(api.url + api.inicioSesion.login, user)
       const usuario = response.data.user
-      // console.log('Response:::', response)
       commit('setUser', usuario)
       commit('setAuthenticated', true)
       return response
@@ -30,6 +34,14 @@ const mutations = {
   },
   setAuthenticated (state, isAuthenticated) {
     state.isAuthenticated = isAuthenticated
+  },
+  clearUser (state) {
+    state.user = {
+      id: null,
+      nombre: null,
+      correo: null,
+      id_rol: null
+    }
   }
 }
 const getters = {

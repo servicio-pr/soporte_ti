@@ -1,36 +1,37 @@
 <template>
   <nav id="navbar" class="navbar nav-fill navbar-expand-lg bg-dark border dark-border-subtle rounded-5">
     <div class="container-fluid justify-content-center">
-      <div class="row">
+      <div class="row w-100">
+        <!-- Tickets Link -->
         <div class="col-2">
-          <a class="nav-link" href="#">
-            <router-link to="/tickets" :class="{ disabled: !isAuthenticated }">Tickets</router-link>
-          </a>
+          <router-link to="/tickets" class="nav-link text-bg-dark" :class="{ disabled: !isAuthenticated }">
+            Tickets
+          </router-link>
         </div>
+
+        <!-- Search Form -->
         <div class="col-6">
-          <a class="">
-            <form class="d-flex" role="search" :class="{ disabled: !isAuthenticated }">
-              <input class="form-control s-nv text-bg-dark" type="search" placeholder="Número de ticket" aria-label="Search" pattern="\d{8,8}" required>
-              <button class="btn btn-outline-primary" type="submit">Buscar ticket</button>
-            </form>
-          </a>
+          <form class="d-flex" role="search" :class="{ disabled: !isAuthenticated }">
+            <input class="form-control s-nv text-bg-dark" type="search" placeholder="Número de ticket" aria-label="Search" pattern="\d{8,8}" required>
+            <button class="btn btn-outline-primary" type="submit">Buscar ticket</button>
+          </form>
         </div>
-        <div class="col-2">
-          <a class="nav-link d-flex text-bg-dark" href="#">
-            <div v-if="user">
-              <router-link to="/sesion">Bienvenido, {{ user.nombre }}</router-link>
-            </div>
-            <div v-else>
-              <router-link to="/sesion">Inicio de sesión</router-link>
-            </div>
-        </a>
+
+        <!-- User Greeting or Login Link -->
+        <div class="col-2 text-center">
+          <div v-if="isAuthenticated">
+            <router-link class="nav-link text-white" to="/sesion">Bienvenido, {{ user.nombre }}</router-link>
+          </div>
+          <div v-else>
+            <router-link to="/sesion" class="nav-link text-white">Inicio de sesión</router-link>
+          </div>
         </div>
-        <div class="col-2">
-          <a class="nav-link" href="#">
-            <router-link to="/" v-if="user" :class="{ disabled: !isAuthenticated }">
-              <a @click="handleCerrarSesion" href="">Cerrar sesión</a>
-            </router-link>
-          </a>
+
+        <!-- Logout Link -->
+        <div class="col-2 text-center">
+          <div v-if="isAuthenticated">
+            <a @click="handleCerrarSesion" class="nav-link text-white">Cerrar sesión</a>
+          </div>
         </div>
       </div>
     </div>
