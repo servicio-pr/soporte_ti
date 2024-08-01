@@ -2,12 +2,8 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <div class="">
-            <Sesion v-if="!isAuthenticated"/>
-        </div>
-        <div>
-          <Perfil v-if="isAuthenticated"/>
-        </div>
+        <Sesion v-if="!isAuthenticated"/>
+        <Perfil v-else/>
       </div>
     </div>
   </div>

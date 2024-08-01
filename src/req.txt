@@ -7,3 +7,4 @@ intalar dependencias npm no compatibles
 para el back-end
 
 express, sequelize, mysql2 and body-parser
+

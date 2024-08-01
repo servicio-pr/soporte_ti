@@ -6,7 +6,8 @@ const state = {
     id: null,
     nombre: null,
     correo: null,
-    id_rol: null
+    id_rol: null,
+    typeUser: null
   },
   isAuthenticated: false
 }
@@ -14,12 +15,16 @@ const actions = {
   async iniciarSesion ({ commit }, user) {
     try {
       const response = await axios.post(api.url + api.inicioSesion.login, user)
-      const usuario = response.data.user
-      commit('setUser', usuario)
-      commit('setAuthenticated', true)
+      if (response.status === 200) {
+        const usuario = response.data.user
+        commit('setUser', usuario)
+        commit('setAuthenticated', true)
+        console.log('response:::', response)
+      }
       return response
     } catch (error) {
-      console.error('Error Al iniciar sesion', error)
+      console.error('Error Al iniciar sesion and response.data', error.response.data)
+      return error.response.data
     }
   },
   cerrarSesion ({ commit }) {
