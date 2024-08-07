@@ -2,7 +2,7 @@
   <div class="container-fuid bs-body-bg">
     <div class="row">
       <div class="col">
-        <div class="card text-bg-dark border dark-border-subtle rounded-4">
+        <div class="card text-bg-dark border dark-border-subtle rounded-4" v-if="showEstatusTicket">
           <h2 class="card-title">Seguimiento de ticket</h2>
           <div class="card-header">
             <p>Ingrese el número de ticket para poder validar el estatus del mismo.</p>
@@ -150,12 +150,14 @@
               </div>
               <div class="col-sm-2">
                 <div class="row input-group-text text-bg-dark">
-                  <input
+                  <button
                   class="col-auto btn btn-outline-primary"
                     type="submit"
                     value="Enviar respuesta"
                   >
-                    </div>
+                  Enviar respuesta
+                  </button>
+                </div>
               </div>
             </div>
           </form>
@@ -190,6 +192,9 @@ export default {
     ...mapGetters('ticket', ['Tickets']),
     ...mapState('inicioSesion', {
       user: state => state.user
+    }),
+    ...mapState('ticket', {
+      showEstatusTicket: state => state.showEstatusTicket
     })
   },
   methods: {
@@ -198,8 +203,8 @@ export default {
       try {
         const response = await this.fetchTicketId(this.ticketEstatus.id)
         this.ticketEstatus = {
-          id: '',
-          email: ''
+          id: this.ticketEstatus.id,
+          email: this.ticketEstatus.email
         }
         if (response.data.message === 'Exito') {
           this.showAlertTicketNo = false
@@ -215,10 +220,9 @@ export default {
     ...mapActions('ticket', ['nuevaRespuesta']),
     async NuevaRespuesta () {
       try {
-        this.respuesta = {
-          id_ticket: this.ticketEstatus.id,
-          id_usuario: this.user.id
-        }
+        this.respuesta.id_ticket = this.ticketEstatus.id
+        this.respuesta.id_usuario = this.user.id
+        console.log('Respuesta antes', this.respuesta)
         await this.nuevaRespuesta(this.respuesta)
         this.respuesta = {
           id: '',
@@ -227,7 +231,7 @@ export default {
           estatus: ''
         }
       } catch (error) {
-        console.error('Error al crear el ticket:', error)
+        console.error('Error al insertar respuesta:', error)
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fuid bs-body-bg">
+    <div class="container-fuid bs-body-bg"  v-if="showNuevoTicket">
         <div class="row justify-content-md-center">
             <div class="col">
                 <div class="card text-bg-dark border dark-border-subtle rounded-4">
@@ -201,6 +201,9 @@ export default {
     ...mapState('inicioSesion', {
       user: state => state.user,
       isAuthenticated: state => state.isAuthenticated
+    }),
+    ...mapState('ticket', {
+      showNuevoTicket: state => state.showNuevoTicket
     })
   },
   methods: {

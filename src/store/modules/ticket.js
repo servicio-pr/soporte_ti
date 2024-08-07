@@ -3,7 +3,9 @@ import api from '../../config/api'
 const state = {
   Tickets: [],
   Ticket: {},
-  respuesta: {}
+  respuesta: {},
+  showNuevoTicket: true,
+  showEstatusTicket: true
 }
 const actions = {
   async nuevoTicket ({ commit }, ticket) {
@@ -53,10 +55,19 @@ const actions = {
   },
   async nuevaRespuesta ({ commit }, respuesta) {
     try {
+      console.log(respuesta)
       const response = await axios.post(api.url + api.tickets.nuevaRespuesta, respuesta)
       commit('InsertRespuesta', response)
     } catch (error) {
       console.log('Error insertando respuesta', error)
+    }
+  },
+  async showComponent ({ commit }, state) {
+    try {
+      commit('ShowComponentNT', state)
+      commit('ShowComponentST', state)
+    } catch (e) {
+      console.log('Error cambiando estatus SNT & SET')
     }
   }
 }
@@ -69,6 +80,12 @@ const mutations = {
   },
   InsertRespuesta: (state, res) => {
     state.respuesta = (res)
+  },
+  ShowComponentNT: (state, value) => {
+    state.showNuevoTicket = value
+  },
+  ShowComponentST: (state, value) => {
+    state.showEstatusTicket = value
   }
 }
 const getters = {

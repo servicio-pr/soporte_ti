@@ -29,14 +29,14 @@
                     </tr>
                   </div>
                 </thead>
-                <tbody v-if="Tickets != null">
-                  <tr v-for="(value, key) in Tickets" :key="key">
-                    <td> {{ value }} </td>
+                <tbody v-if="Tickets === null">
+                  <tr>
+                    <td>Aún no hay tickets.</td>
                   </tr>
                 </tbody>
                 <tbody v-else>
-                  <tr>
-                    <td>Aún no hay tickets.</td>
+                  <tr v-for="(value, key) in Tickets" :key="key">
+                    <td> {{ value }} </td>
                   </tr>
                 </tbody>
               </table>

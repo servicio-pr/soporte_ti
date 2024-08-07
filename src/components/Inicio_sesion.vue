@@ -129,6 +129,7 @@ export default {
   methods: {
     ...mapActions('inicioSesion', ['iniciarSesion']),
     async inicioSesion () {
+      this.showAlertPass = false
       this.User.error = ''
       if (!this.validEmail(this.User.correo)) {
         console.log('Valor de SelectUserType', this.User.SelectUserType)

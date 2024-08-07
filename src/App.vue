@@ -2,22 +2,33 @@
   <nav id="navbar" class="navbar nav-fill navbar-expand-lg bg-dark border dark-border-subtle rounded-5">
     <div class="container-fluid justify-content-center">
       <div class="row w-100">
-        <!-- Tickets Link -->
+
         <div class="col-2">
           <router-link to="/tickets" class="nav-link text-bg-dark" :class="{ disabled: !isAuthenticated }">
-            Tickets
+            <button
+              class="btn btn-outline-primary"
+              type="submit"
+              @click="NuevoTicket"
+              >
+              Nuevo Ticket
+            </button>
           </router-link>
         </div>
 
-        <!-- Search Form -->
         <div class="col-6">
-          <form class="d-flex" role="search" :class="{ disabled: !isAuthenticated }">
-            <input class="form-control s-nv text-bg-dark" type="search" placeholder="Número de ticket" aria-label="Search" pattern="\d{8,8}" required>
+          <form class="form d-flex" @submit.prevent="BuscarTicket" role="search" :class="{ disabled: !isAuthenticated }">
+            <input
+            class="form-control s-nv text-bg-dark"
+            type="search"
+            placeholder="Número de ticket"
+            aria-label="Search"
+            pattern="\d*"
+            v-model="buscarTicket.id"
+            required>
             <button class="btn btn-outline-primary" type="submit">Buscar ticket</button>
           </form>
         </div>
 
-        <!-- User Greeting or Login Link -->
         <div class="col-2 text-center">
           <div v-if="isAuthenticated">
             <router-link class="nav-link text-white" to="/sesion">Bienvenido, {{ user.nombre }}</router-link>
@@ -27,7 +38,6 @@
           </div>
         </div>
 
-        <!-- Logout Link -->
         <div class="col-2 text-center">
           <div v-if="isAuthenticated">
             <a @click="handleCerrarSesion" class="nav-link text-white">Cerrar sesión</a>
@@ -48,8 +58,8 @@ export default {
   name: 'nav_bar',
   data () {
     return {
-      Ticket: {
-        id: null
+      buscarTicket: {
+        id: ''
       }
     }
   },
@@ -58,6 +68,20 @@ export default {
     async handleCerrarSesion () {
       await this.cerrarSesion()
       this.$router.push('/sesion')
+    },
+    ...mapActions('ticket', ['fetchTicketId']),
+    ...mapActions('ticket', ['showComponent']),
+    async BuscarTicket () {
+      const response = await this.fetchTicketId(this.buscarTicket.id)
+      console.log('Response nabvar:---', response)
+      this.showComponents()
+      this.$router.push('/tickets')
+    },
+    async showComponents () {
+      await this.showComponent(false)
+    },
+    async NuevoTicket () {
+      await this.showComponent(true)
     }
   },
   computed: {
