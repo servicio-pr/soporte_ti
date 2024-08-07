@@ -15,27 +15,13 @@ const actions = {
   async iniciarSesion ({ commit }, user) {
     try {
       const response = await axios.post(api.url + api.inicioSesion.login, user)
-<<<<<<< HEAD
       if (response.status === 200) {
         const usuario = response.data.user
         commit('setUser', usuario)
         commit('setAuthenticated', true)
-        console.log('response:::', response)
       }
       return response
-=======
-      if (response.status === 401) {
-        console.log('Error: ', response.status.message)
-        return null
-      } else {
-        const usuario = response.data.user
-        commit('setUser', usuario)
-        commit('setAuthenticated', true)
-        return response
-      }
->>>>>>> 056742527dbd58444578662e81773ae0d8baac0c
     } catch (error) {
-      console.error('Error Al iniciar sesion and response.data', error.response.data)
       return error.response.data
     }
   },

@@ -16,6 +16,12 @@
                 method = "get"
                 >
                   <div class="row">
+                    <div v-if="showAlertTicketOk" class="alert alert-info" role="alert">
+                      Ticket {{ Tickets.id }}, encontrado.
+                    </div>
+                    <div v-if="showAlertTicketNo" class="alert alert-danger" role="alert">
+                      Ticket {{ Tickets.id }} no encontrado.
+                    </div>
                     <div class="col">
                       <div class="row input-group-text text-bg-dark">
                       <label class="col form-label" for="ticket">Número de ticket </label>
@@ -65,9 +71,8 @@
           </div>
         </div>
         <div class="card text-bg-dark border dark-border-subtle rounded-4">
-          <h2 class="card-title">Ticket {{ Tickets.id }}</h2>
+          <h2 class="card-title">Ticket número {{ Tickets.id }}</h2>
           <div class="card-header">
-
           </div>
           <div class="card-body">
             <table  class="table-dark" id="info">
@@ -87,8 +92,6 @@
               <tbody>
                   <tr>
                     <td :key="Tickets.id"> {{ Tickets.titulo }} </td>
-                    <td :key="Tickets.id" :value="Tickets.id"> {{ Tickets.id }} </td>
-                    <td :key="Tickets.id" :value="Tickets.id_contacto"> {{ Tickets.id_contacto }} </td>
                     <td :key="Tickets.id" :value="Tickets.id_contacto"> {{ Tickets.id_contacto }} </td>
                     <td :key="Tickets.id" :value="Tickets.id"> {{ Tickets.id }} </td>
                     <td :key="Tickets.id" :value="Tickets.id_ubicacion"> {{ Tickets.id_ubicacion }} </td>
@@ -102,7 +105,7 @@
         </div>
         <div class="card text-bg-dark border dark-border-subtle rounded-4">
           <div class="card-header">
-
+            <h3>Ticket {{ Tickets.id }}</h3>
           </div>
           <div class="card-body">
             <form id="resp"
@@ -164,50 +167,63 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'Estatus_ticket',
   data () {
     return {
-      tickets: [],
       ticketEstatus: {
         id: '',
         correo: ''
       },
       respuesta: {
-        id: '',
+        id_ticket: '',
+        id_usuario: '',
         mensaje: '',
-        evidncias: '',
+        evidencias: '',
         estatus: ''
       }
     }
   },
   computed: {
-    ...mapGetters('ticket', ['Tickets'])
+    ...mapGetters('ticket', ['Tickets']),
+    ...mapState('inicioSesion', {
+      user: state => state.user
+    })
   },
   methods: {
     ...mapActions('ticket', ['fetchTicketId']),
     async BuscarTicket () {
       try {
-        await this.fetchTicketId(this.ticketEstatus.id)
+        const response = await this.fetchTicketId(this.ticketEstatus.id)
         this.ticketEstatus = {
           id: '',
           email: ''
         }
+        if (response.data.message === 'Exito') {
+          this.showAlertTicketNo = false
+          this.showAlertTicketOk = true
+        } else {
+          this.showAlertTicketNo = true
+          this.showAlertTicketOk = false
+        }
       } catch (error) {
-        console.error('Errror al buscra ticket')
+        console.error('Errror al buscar ticket')
       }
     },
     ...mapActions('ticket', ['nuevaRespuesta']),
     async NuevaRespuesta () {
       try {
-        this.respuesta.id = this.ticketEstatus.id
+        this.respuesta = {
+          id_ticket: this.ticketEstatus.id,
+          id_usuario: this.user.id
+        }
         await this.nuevaRespuesta(this.respuesta)
         this.respuesta = {
-          id: this.ticketEstatus.id,
+          id: '',
           mensaje: '',
-          evidncias: '',
+          evidencias: '',
           estatus: ''
         }
       } catch (error) {

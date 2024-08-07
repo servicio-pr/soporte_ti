@@ -11,14 +11,32 @@
             <div class="card-body">
               <table class="table-dark">
                 <thead>
-                  Tickets:
+                  <div class="row" v-if="user.numeroTickets === 0">
+                    <button class="btn btn-outline-primary" @click="Nuevo_ticket" type="button">Nuevo ticket</button>
+                  </div>
+                  <div v-else>
+                    <button class="btn btn-outline-primary" @click="LoadTickets" type="button">Mostrar los {{ user.numeroTickets }} tikets</button>
+                    <tr v-if="showTickets">
+                      <td>Título</td>
+                      <td>Estatus</td>
+                      <td>Usuario</td>
+                      <td>Analista</td>
+                      <td>Fecha de solicitud</td>
+                      <td>Centro</td>
+                      <td>Tema</td>
+                      <td>Descripción</td>
+                      <td>Fecha de la última respuesta</td>
+                    </tr>
+                  </div>
                 </thead>
-                <tbody v-if="Tickets!=null">
-                  <tr v-for="ticket in Tickets" :key="ticket.id">
-                    <td>{{ ticket.title }}</td>
+                <tbody v-if="Tickets != null">
+                  <tr v-for="(value, key) in Tickets" :key="key">
+                    <td> {{ value }} </td>
                   </tr>
-                  <tr v-esle>
-                    <td>Aun no hay tickets.</td>
+                </tbody>
+                <tbody v-else>
+                  <tr>
+                    <td>Aún no hay tickets.</td>
                   </tr>
                 </tbody>
               </table>
@@ -32,17 +50,21 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
-  methods: {
-    ...mapActions('ticket', ['fetchTickesByUser']),
-    async LoadTickets () {
-      const userId = this.user.id
-      console.log('uerId')
-      await this.$store.dispatch('fetchTickesByUser', userId)
-    }
-  },
   computed: {
     ...mapState('inicioSesion', ['user']),
     ...mapState('ticket', ['Tickets'])
+  },
+  methods: {
+    ...mapActions('ticket', ['fetchTickesByIdUser']),
+    async LoadTickets () {
+      try {
+        const id = parseInt(this.user.id)
+        const response = await this.fetchTickesByIdUser(id)
+        console.log('Response fetchTickesByIdUser::: ', response.data.message)
+      } catch (error) {
+        console.log('Error fetchTickesByIdUser')
+      }
+    }
   }
 }
 </script>

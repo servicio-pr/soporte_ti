@@ -45,7 +45,7 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: 'Nuevo_ticket',
+  name: 'nav_bar',
   data () {
     return {
       Ticket: {

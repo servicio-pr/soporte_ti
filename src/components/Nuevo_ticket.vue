@@ -7,6 +7,12 @@
                     <div class="card-header">
                         <p>Por favor llene el siguiente formulario para poder comenzar a resolver su inconveniente. </p>
                     </div>
+                    <div v-if="showAlertTicketOk" class="alert alert-primary" role="alert">
+                        Ticket creado exitosamente, número:
+                    </div>
+                    <div v-if="showAlertPass" class="alert alert-danger" role="alert">
+                      Error al crear el ticket.
+                  </div>
                     <div class="card-body">
                     <form id="ticket"
                     @submit.prevent="NuevoTicketForm"
@@ -16,16 +22,18 @@
                         <div class="row justify-content-center input-group-text text-bg-dark">
                             <label class="col form-label" for="nombre">Nombre </label>
                             <input
-                            id="ticketNombre"
+                            id="nombre"
                             class="col form-control text-bg-dark"
                             v-model="Ticket.nombre"
                             type="text"
-                            name="name"
+                            name="nombre"
                             placeholder="José Perez Leon"
                             required
+                            value="user.nombre"
+                            :class="{ disabled: !isAuthenticated }"
                             >
                             <div class="col">
-                                <span for="nomHelpInline" class="scrollable-text form-text text-bg-dark">
+                                <span for="nombre" class="scrollable-text form-text text-bg-dark">
                                     Ingrese su nombre completo
                                 </span>
                             </div>
@@ -43,7 +51,7 @@
                             required
                             >
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text text-bg-dark">
+                                <span for="email" id="emailHelpInline" class="form-text text-bg-dark">
                                     Ingrese su correo laboral
                                 </span>
                             </div>
@@ -60,7 +68,21 @@
                             required
                             >
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text text-bg-dark">
+                                <span for="number" class="form-text text-bg-dark">
+                                    Ext.
+                                </span>
+                            </div>
+                            <input
+                            id="ext"
+                            class="col form-control text-bg-dark"
+                            v-model="Ticket.ext"
+                            type="text"
+                            name="number"
+                            placeholder="123"
+                            required
+                            >
+                            <div class="col">
+                                <span for="ext" id="extHelpInline" class="form-text text-bg-dark">
                                     Número telefónico de contacto
                                 </span>
                             </div>
@@ -74,12 +96,12 @@
                                 required
                                 for="centros"
                             >
-                            <option v-for="centro in centros" :key="centro.id" :value="centro.nombre">
+                            <option v-for="centro in centros" :key="centro.id" :value="centro.id">
                                 {{ centro.nombre }}
                             </option>
                             </select>
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text text-bg-dark">
+                                <span for="centros" id="centrosHelpInline" class="form-text text-bg-dark">
                                     Lugar donde se presenta el problema
                                 </span>
                             </div>
@@ -93,12 +115,12 @@
                                 required
                                 for="temas"
                             >
-                            <option v-for="tema in temas" :key="tema.id" :value="tema.nombre">
+                            <option v-for="tema in temas" :key="tema.id" :value="tema.id">
                                 {{ tema.nombre }}
                             </option>
                             </select>
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text text-bg-dark">
+                                <span for="temas" id="temaHelpInline" class="form-text text-bg-dark">
                                     Seleccione el tema a tratar
                                 </span>
                             </div>
@@ -118,7 +140,7 @@
                                 >
                             </div>
                             <div class="col">
-                                <span id="passwordHelpInline" class="form-text text-bg-dark">
+                                <span for="descripcion" class="form-text text-bg-dark">
                                     Describa el problema lo más preciso y detalladamente posible.
                                 </span>
                             </div>
@@ -155,7 +177,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'Nuevo_ticket',
@@ -165,6 +187,7 @@ export default {
         nombre: '',
         email: '',
         telefono: '',
+        ext: '',
         centroSelect: '',
         temaSelect: '',
         descripcion: '',
@@ -174,7 +197,11 @@ export default {
   },
   computed: {
     ...mapGetters('tema', ['temas']),
-    ...mapGetters('centro', ['centros'])
+    ...mapGetters('centro', ['centros']),
+    ...mapState('inicioSesion', {
+      user: state => state.user,
+      isAuthenticated: state => state.isAuthenticated
+    })
   },
   methods: {
     ...mapActions('tema', ['fetchTemas']),
@@ -182,18 +209,23 @@ export default {
     ...mapActions('ticket', ['nuevoTicket']),
     async NuevoTicketForm () {
       try {
+        this.Ticket.idUser = this.user.id
         await this.nuevoTicket(this.Ticket)
         this.Ticket = {
           nombre: '',
           email: '',
           telefono: '',
+          ext: '',
           centroSelect: '',
           temaSelect: '',
           descripcion: '',
           evidencias: ''
         }
+        this.showAlertTicketBad = false
+        this.showAlertTicketOk = true
       } catch (error) {
-        console.error('Error al crear el ticket:', error)
+        this.showAlertTicketBad = true
+        this.showAlertTicketOk = false
       }
     }
   },

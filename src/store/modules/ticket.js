@@ -14,26 +14,31 @@ const actions = {
       console.error('Failed to add ticket:', error)
     }
   },
-  async fetchTickesByUser ({ commit }, userId) {
+  async fetchTickesByIdUser ({ commit }, userId) {
     try {
-      console.log('State Ticktes at fetchTickesByUser:', userId)
       const response = await axios.get(api.url + api.tickets.getAllByIdUser + userId)
-      // console.log('reponse: desues api', response.data)
-      if (!response || !response.data) {
-        response.data = {}
+      if (response.data.message === 'Exito') {
+        commit('SetTickets', response.data.data)
+      } else {
+        response.data.data = null
       }
-      commit('SetTickets', response.data)
+      console.log('response by id user', response.data.data)
+      return response
     } catch (error) {
-      console.error('Failed to search ticket id:', error)
+      console.error('Failed to search ticket by id user:', error)
     }
   },
   async fetchTicketId ({ commit }, TicketId) {
     try {
       const response = await axios.get(api.url + api.tickets.getOneById + TicketId)
-      // console.log('reponse: desues api', response.data)
-      commit('SetTickets', response.data)
+      if (response.data.message === 'Exito') {
+        commit('SetTickets', response.data.data)
+      } else {
+        response.data.data = null
+      }
+      return response
     } catch (error) {
-      console.error('Failed to search ticket id:', error)
+      console.error('Failed to search ticket by id:', error)
     }
   },
   async fetchTicketEmail ({ commit }, ticket) {
@@ -48,7 +53,7 @@ const actions = {
   },
   async nuevaRespuesta ({ commit }, respuesta) {
     try {
-      const response = await axios.post(api.url + api.tickets.nuevaRespuesta + respuesta)
+      const response = await axios.post(api.url + api.tickets.nuevaRespuesta, respuesta)
       commit('InsertRespuesta', response)
     } catch (error) {
       console.log('Error insertando respuesta', error)
