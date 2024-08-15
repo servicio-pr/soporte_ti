@@ -1,8 +1,8 @@
 <template>
-  <div class="container-fuid bs-body-bg">
+  <div class="container-fuid bs-body-bg" v-if="showEstatusTicket">
     <div class="row">
       <div class="col">
-        <div class="card text-bg-dark border dark-border-subtle rounded-4" v-if="showEstatusTicket">
+        <div class="card text-bg-dark border dark-border-subtle rounded-4">
           <h2 class="card-title">Seguimiento de ticket</h2>
           <div class="card-header">
             <p>Ingrese el número de ticket para poder validar el estatus del mismo.</p>
@@ -87,17 +87,56 @@
                     <td>Tema</td>
                     <td>Descripción</td>
                     <td>Fecha de la última respuesta</td>
+                    <td>Numero de respuestas</td>
                   </tr>
               </thead>
               <tbody>
                   <tr>
                     <td :key="Tickets.id"> {{ Tickets.titulo }} </td>
-                    <td :key="Tickets.id" :value="Tickets.id_contacto"> {{ Tickets.id_contacto }} </td>
-                    <td :key="Tickets.id" :value="Tickets.id"> {{ Tickets.id }} </td>
-                    <td :key="Tickets.id" :value="Tickets.id_ubicacion"> {{ Tickets.id_ubicacion }} </td>
-                    <td :key="Tickets.id" :value="Tickets.id_tema"> {{ Tickets.id_tema }} </td>
-                    <td :key="Tickets.id" :value="Tickets.id_sdescripcion"> {{ Tickets.descripcion }} </td>
-                    <td :key="Tickets.id" :value="Tickets.id"> {{ Tickets.id }} </td>
+                    <td :key="Tickets.id"> ##Estatus## </td>
+                    <td :key="Tickets.id"> {{ Tickets.id_contacto }} </td>
+                    <td :key="Tickets.id"> ##Analista## </td>
+                    <td :key="Tickets.id"> ##Fecha## </td>
+                    <td :key="Tickets.id"> {{ Tickets.id_ubicacion }} </td>
+                    <td :key="Tickets.id"> {{ Tickets.id_tema }} </td>
+                    <td :key="Tickets.id"> {{ Tickets.descripcion }} </td>
+                    <td :key="Tickets.id"> ##Fecha## </td>
+                    <td :key="Tickets.id"> {{ Tickets.numeroRespuestas }} </td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+        id="respuestas"
+        class="card text-bg-dark border dark-border-subtle rounded-4"
+        v-if="Tickets.numeroRespuestas > 0"
+        >
+          <h4 class="card-title">Respuestas del ticket número {{ Tickets.id }}</h4>
+          <div class="card-header">
+          </div>
+          <div class="card-body">
+            <table  class="table-dark" id="info">
+              <thead>
+                  <tr>
+                    <td>Mensaje</td>
+                    <td>feca</td>
+                    <td>Estatus</td>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td :key="Respuestas.id"> {{ Tickets.id }} </td>
+                    <td :key="Respuestas.id"> {{ Tickets.id }} </td>
+                    <td :key="Respuestas.id"> {{ Tickets.id }} </td>
+                    <td :key="Respuestas.id">
+                      <div v-if="Tickets.numeroRespuestas > 0">
+                        <button @click="mostrarRespuestas" class="btn btn-outline-primary">{{ Tickets.numeroRespuestas }}</button>
+                      </div>
+                      <div v-else>
+                        <label>{{ Tickets.numeroRespuestas }}</label>
+                      </div>
+                    </td>
                   </tr>
               </tbody>
             </table>
@@ -116,7 +155,7 @@
             <div class="row">
               <div class="col-sm-10">
                 <div class="row input-group-text text-bg-dark">
-                  <label class="col form-label" for="resp">Mensje:  </label>
+                  <label class="col form-label" for="resp">Mensaje:  </label>
                   <input
                     id="resp"
                     class="col form-control text-bg-dark"
@@ -195,16 +234,23 @@ export default {
     }),
     ...mapState('ticket', {
       showEstatusTicket: state => state.showEstatusTicket
+    }),
+    ...mapState('ticket', {
+      Respuestas: state => state.Respuestas
     })
   },
   methods: {
+    ...mapActions('ticket', ['fetchResTicketId']),
     ...mapActions('ticket', ['fetchTicketId']),
     async BuscarTicket () {
       try {
         const response = await this.fetchTicketId(this.ticketEstatus.id)
         this.ticketEstatus = {
-          id: this.ticketEstatus.id,
-          email: this.ticketEstatus.email
+          id: '',
+          email: ''
+        }
+        if (response.data.data.numeroRespuestas > 0) {
+          await this.fetchResTicketId(this.Tickets.id)
         }
         if (response.data.message === 'Exito') {
           this.showAlertTicketNo = false
@@ -220,7 +266,7 @@ export default {
     ...mapActions('ticket', ['nuevaRespuesta']),
     async NuevaRespuesta () {
       try {
-        this.respuesta.id_ticket = this.ticketEstatus.id
+        this.respuesta.id_ticket = this.Tickets.id
         this.respuesta.id_usuario = this.user.id
         console.log('Respuesta antes', this.respuesta)
         await this.nuevaRespuesta(this.respuesta)

@@ -6,6 +6,7 @@ export default {
     getOneById: '/tickets/getOneById/',
     getAllByIdUser: '/tickets/getAllByIdUser/',
     getOneByEmail: '/tickets/getOneByEmail/',
+    getAllResByTicketId: '/tickets/getAllResByTicketId/',
     createTicket: '/tickets/createTicket',
     nuevaRespuesta: '/tickets/nuevaRespuesta'
   },

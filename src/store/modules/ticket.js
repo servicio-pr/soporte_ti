@@ -4,6 +4,7 @@ const state = {
   Tickets: [],
   Ticket: {},
   respuesta: {},
+  Respuestas: [],
   showNuevoTicket: true,
   showEstatusTicket: true
 }
@@ -62,12 +63,33 @@ const actions = {
       console.log('Error insertando respuesta', error)
     }
   },
-  async showComponent ({ commit }, state) {
+  async fetchResTicketId ({ commit }, ticketId) {
+    try {
+      console.log('Antes de api', ticketId)
+      const response = await axios.get(api.url + api.tickets.getAllResByTicketId + ticketId)
+      if (response.data.message === 'Exito') {
+        commit('SetRespuestas', response.data.data)
+      } else {
+        response.data.data = null
+      }
+      console.log('response by id user', response.data.data)
+      return response
+    } catch (error) {
+      console.error('Failed to search Responses by ticket id:', error)
+    }
+  },
+  async showComponentNT ({ commit }, state) {
     try {
       commit('ShowComponentNT', state)
+    } catch (e) {
+      console.log('Error cambiando estatus SNT')
+    }
+  },
+  async showComponentST ({ commit }, state) {
+    try {
       commit('ShowComponentST', state)
     } catch (e) {
-      console.log('Error cambiando estatus SNT & SET')
+      console.log('Error cambiando estatus SET')
     }
   }
 }
@@ -77,6 +99,9 @@ const mutations = {
   },
   SetTickets: (state, ticket) => {
     state.Tickets = ticket
+  },
+  SetRespuestas: (state, Respuestas) => {
+    state.Respuestas = Respuestas
   },
   InsertRespuesta: (state, res) => {
     state.respuesta = (res)

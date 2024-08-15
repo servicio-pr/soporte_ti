@@ -16,14 +16,21 @@
         </div>
 
         <div class="col-6">
-          <form class="form d-flex" @submit.prevent="BuscarTicket" role="search" :class="{ disabled: !isAuthenticated }">
+          <form
+          class="form d-flex"
+          @submit.prevent="BuscarTicket"
+          accion ="hhtps://vuejs.org/"
+          method = "get"
+          role="search"
+          :class="{ disabled: !isAuthenticated }"
+          >
             <input
             class="form-control s-nv text-bg-dark"
             type="search"
             placeholder="Número de ticket"
             aria-label="Search"
             pattern="\d*"
-            v-model="buscarTicket.id"
+            v-model="ticketEstatus.id"
             required>
             <button class="btn btn-outline-primary" type="submit">Buscar ticket</button>
           </form>
@@ -52,16 +59,23 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'nav_bar',
   data () {
     return {
-      buscarTicket: {
+      ticketEstatus: {
         id: ''
       }
     }
+  },
+  computed: {
+    ...mapGetters('ticket', ['Tickets']),
+    ...mapState('inicioSesion', {
+      user: state => state.user,
+      isAuthenticated: state => state.isAuthenticated
+    })
   },
   methods: {
     ...mapActions('inicioSesion', ['cerrarSesion']),
@@ -70,25 +84,33 @@ export default {
       this.$router.push('/sesion')
     },
     ...mapActions('ticket', ['fetchTicketId']),
-    ...mapActions('ticket', ['showComponent']),
+    ...mapActions('ticket', ['showComponentST']),
+    ...mapActions('ticket', ['showComponentNT']),
     async BuscarTicket () {
-      const response = await this.fetchTicketId(this.buscarTicket.id)
-      console.log('Response nabvar:---', response)
-      this.showComponents()
-      this.$router.push('/tickets')
-    },
-    async showComponents () {
-      await this.showComponent(false)
+      try {
+        const response = await this.fetchTicketId(this.ticketEstatus.id)
+        this.ticketEstatus = {
+          id: '',
+          email: ''
+        }
+        if (response.data.message === 'Exito') {
+          this.showAlertTicketNo = false
+          this.showAlertTicketOk = true
+        } else {
+          this.showAlertTicketNo = true
+          this.showAlertTicketOk = false
+        }
+        await this.showComponentST(true)
+        await this.showComponentNT(false)
+        this.$router.push('/tickets')
+      } catch (e) {
+        console.error('Errror al buscar ticket')
+      }
     },
     async NuevoTicket () {
-      await this.showComponent(true)
+      await this.showComponentNT(true)
+      await this.showComponentST(false)
     }
-  },
-  computed: {
-    ...mapState('inicioSesion', {
-      user: state => state.user,
-      isAuthenticated: state => state.isAuthenticated
-    })
   }
 }
 </script>

@@ -4,8 +4,9 @@
         <div class="col">
           <div class="card text-bg-dark border dark-border-subtle rounded-4">
             <div class="title-card">
-              <div class="list-group-item" v-for="(value, key) in user" :key="key">
-                {{ key }}: {{ value }}
+              <h3>Hola {{ user.nombre }}, bienvenido de nuevo</h3>
+              <div class="table table-striped" v-for="(value, key) in user" :key="key">
+                {{ value }}
               </div>
             </div>
             <div class="card-body">

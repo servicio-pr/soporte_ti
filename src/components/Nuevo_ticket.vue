@@ -8,11 +8,11 @@
                         <p>Por favor llene el siguiente formulario para poder comenzar a resolver su inconveniente. </p>
                     </div>
                     <div v-if="showAlertTicketOk" class="alert alert-primary" role="alert">
-                        Ticket creado exitosamente, número:
+                        Ticket creado exitosamente, número: ##numeroTicket##
                     </div>
                     <div v-if="showAlertPass" class="alert alert-danger" role="alert">
                       Error al crear el ticket.
-                  </div>
+                    </div>
                     <div class="card-body">
                     <form id="ticket"
                     @submit.prevent="NuevoTicketForm"
@@ -24,13 +24,11 @@
                             <input
                             id="nombre"
                             class="col form-control text-bg-dark"
-                            v-model="Ticket.nombre"
+                            v-model="User.nombre"
                             type="text"
                             name="nombre"
                             placeholder="José Perez Leon"
                             required
-                            value="user.nombre"
-                            :class="{ disabled: !isAuthenticated }"
                             >
                             <div class="col">
                                 <span for="nombre" class="scrollable-text form-text text-bg-dark">
@@ -43,7 +41,7 @@
                             <input
                             id="email"
                             class="col form-control text-bg-dark"
-                            v-model="Ticket.email"
+                            v-model="User.correo"
                             type="text"
                             name="email"
                             min="0"
@@ -61,7 +59,7 @@
                             <input
                             id="number"
                             class="col form-control text-bg-dark"
-                            v-model="Ticket.telefono"
+                            v-model="User.telefono"
                             type="text"
                             name="number"
                             placeholder="+52 5566778899"
@@ -75,7 +73,7 @@
                             <input
                             id="ext"
                             class="col form-control text-bg-dark"
-                            v-model="Ticket.ext"
+                            v-model="User.ext"
                             type="text"
                             name="number"
                             placeholder="123"
@@ -192,6 +190,12 @@ export default {
         temaSelect: '',
         descripcion: '',
         evidencias: ''
+      },
+      User: {
+        nombre: '',
+        correo: '',
+        pass: '',
+        SelectUserContacto: 'usuario'
       }
     }
   },
@@ -204,7 +208,15 @@ export default {
     }),
     ...mapState('ticket', {
       showNuevoTicket: state => state.showNuevoTicket
-    })
+    }),
+    labelClass () {
+      return this.User.SelectUserType === 'usuario' ? 'text-success' : 'text-info'
+    },
+    labelText () {
+      return this.User.SelectUserType === 'usuario'
+        ? 'Iniciar sesión como usuario.'
+        : 'Iniciar sesión como invitado.'
+    }
   },
   methods: {
     ...mapActions('tema', ['fetchTemas']),
@@ -230,12 +242,20 @@ export default {
         this.showAlertTicketBad = true
         this.showAlertTicketOk = false
       }
+    },
+    precargaDatosUser () {
+      if (this.user) {
+        this.User.nombre = this.user.nombre
+        this.User.correo = this.user.correo
+        this.isDisabled = true
+      }
     }
   },
   mounted () {
     try {
       this.fetchTemas()
       this.fetchCentros()
+      this.precargaDatosUser()
     } catch (error) {
       console.log('Error fetch temas y centro', error)
     }

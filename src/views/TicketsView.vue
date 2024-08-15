@@ -2,7 +2,6 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <h2>Tickets</h2>
         <Nuevoticket v-if="isAuthenticated"/>
         <Estatusticket v-if="isAuthenticated"/>
         <Iniciosesion v-if="!isAuthenticated" />
