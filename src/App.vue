@@ -1,10 +1,16 @@
 <template>
-  <nav id="navbar" class="navbar nav-fill navbar-expand-lg bg-dark border dark-border-subtle rounded-5">
+  <nav id="navbar" class="navbar nav-fill navbar-expand-lg">
     <div class="container-fluid justify-content-center">
-      <div class="row w-100">
+      <div class="row">
 
         <div class="col-2">
-          <router-link to="/tickets" class="nav-link text-bg-dark" :class="{ disabled: !isAuthenticated }">
+          <a :href="url_PR">
+            <img :src="logo_PR" alt="Logo Proyecto Roberto" />
+          </a>
+        </div>
+
+        <div class="col-2">
+          <router-link to="/tickets" class="nav-link" :class="{ disabled: !isAuthenticated }">
             <button
               class="btn btn-outline-primary"
               type="submit"
@@ -15,7 +21,7 @@
           </router-link>
         </div>
 
-        <div class="col-6">
+        <div class="col-3">
           <form
           class="form d-flex"
           @submit.prevent="BuscarTicket"
@@ -36,7 +42,7 @@
           </form>
         </div>
 
-        <div class="col-2 text-center">
+        <div class="col-1">
           <div v-if="isAuthenticated">
             <router-link class="nav-link text-white" to="/sesion">Bienvenido, {{ user.nombre }}</router-link>
           </div>
@@ -45,21 +51,33 @@
           </div>
         </div>
 
-        <div class="col-2 text-center">
+        <div class="col-1">
           <div v-if="isAuthenticated">
             <a @click="handleCerrarSesion" class="nav-link text-white">Cerrar sesión</a>
           </div>
         </div>
+
+        <div class="col-1">
+          <a :href="url_PR">
+            <img :src="logo_FA" alt="Logo Fundación Amparo" />
+          </a>
+        </div>
+
       </div>
     </div>
   </nav>
   <div class="container-fuid justify-content-center">
     <router-view/>
   </div>
+  <div class="separator"></div>
+  <div>
+    <Footer/>
+  </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
+import Footer from '@/components/Pie_pagina.vue'
 
 export default {
   name: 'nav_bar',
@@ -67,14 +85,28 @@ export default {
     return {
       ticketEstatus: {
         id: ''
-      }
+      },
+      logo_PR: require('@/assets/logo.png'),
+      logo_FA: require('@/assets/logo_FA.png')
     }
   },
+  components: {
+    Footer
+  },
   computed: {
-    ...mapGetters('ticket', ['Tickets']),
+    ...mapGetters('ticket', ['oneTicket']),
     ...mapState('inicioSesion', {
       user: state => state.user,
       isAuthenticated: state => state.isAuthenticated
+    }),
+    ...mapState('ticket', {
+      showAlertTicketNo: state => state.showAlertTicketNo
+    }),
+    ...mapState('ticket', {
+      showAlertTicketOk: state => state.showAlertTicketOk
+    }),
+    ...mapState('ticket', {
+      Respuestas: state => state.Respuestas
     })
   },
   methods: {
@@ -86,19 +118,25 @@ export default {
     ...mapActions('ticket', ['fetchTicketId']),
     ...mapActions('ticket', ['showComponentST']),
     ...mapActions('ticket', ['showComponentNT']),
+    ...mapActions('ticket', ['AshowAlertTicketNo']),
+    ...mapActions('ticket', ['AshowAlertTicketOk']),
+    ...mapActions('ticket', ['fetchResTicketId']),
     async BuscarTicket () {
       try {
         const response = await this.fetchTicketId(this.ticketEstatus.id)
+        if (response.data.data.numeroRespuestas > 0) {
+          await this.fetchResTicketId(this.oneTicket.id)
+        }
         this.ticketEstatus = {
           id: '',
           email: ''
         }
         if (response.data.message === 'Exito') {
-          this.showAlertTicketNo = false
-          this.showAlertTicketOk = true
+          this.AshowAlertTicketNo(false)
+          this.AshowAlertTicketOk(true)
         } else {
-          this.showAlertTicketNo = true
-          this.showAlertTicketOk = false
+          this.AshowAlertTicketNo(true)
+          this.AshowAlertTicketOk(false)
         }
         await this.showComponentST(true)
         await this.showComponentNT(false)
@@ -116,6 +154,13 @@ export default {
 </script>
 
 <style lang="scss">
+body {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
 #app {
   text-align: center;
   font: 1rem/1.5 var(--bs-font-sans-serif);
@@ -123,6 +168,9 @@ export default {
 }
 ::placeholder {
   color:white;
+ }
+ .card {
+  background-color: black;
  }
 .container {
   display: flex;
@@ -136,10 +184,30 @@ export default {
   margin: 2px;
 }
 .max-width-row {
-  max-width: 70%; /* Tamaño máximo del div de inicio de sesion */
+  max-width: 70%;
 }
 .disabled {
   pointer-events: none;
   color: grey;
+}
+a:link {
+  color: white;
+}
+a:visited {
+  color: white;
+}
+a:hover {
+  color: blue;
+}
+a:active {
+  color: green;
+}
+a {
+  text-decoration: none;
+}
+.separator {
+  height: 2px; /* Ajusta el grosor según tus necesidades */
+  background-color: white; /* Ajusta el color según tus necesidades */
+  margin: 20px 0; /* Ajusta el margen según tus necesidades */
 }
 </style>

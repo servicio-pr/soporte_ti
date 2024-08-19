@@ -48,6 +48,42 @@
                                     <label class="btn btn-outline-info" for="radioInvitado">Iniciar sesión como invitado</label>
                                 </div>
                             </div>
+                            <div v-if="User.SelectUserType === 'invitado'" class="row input-group-text text-bg-dark">
+                            <label class="col form-label" for="nombre">Nombre </label>
+                            <input
+                            id="nombre"
+                            class="col form-control text-bg-dark"
+                            v-model.trim="User.nombre"
+                            type="text"
+                            name="nombre"
+                            placeholder="Jose Peréz León"
+                            aria-describedby="nombreHelp"
+                            >
+                            <div class="col">
+                                <span id="nombreHelp" class="form-text text-bg-dark">
+                                    Ingrese su nombre
+                                </span>
+                                <span v-if="error">{{ error }}</span>
+                            </div>
+                            </div>
+                            <div v-if="User.SelectUserType === 'invitado'" class="row input-group-text text-bg-dark">
+                              <label class="col form-label" for="telefono">Teléfono </label>
+                              <input
+                              id="telefono"
+                              class="col form-control text-bg-dark"
+                              v-model.trim="User.telefono"
+                              type="text"
+                              name="telefono"
+                              placeholder="12 3456 7890"
+                              aria-describedby="telefonoHelp"
+                              >
+                              <div class="col">
+                                  <span id="telefonoHelp" class="form-text text-bg-dark">
+                                      Ingrese su nombre.
+                                  </span>
+                                  <span v-if="error">{{ error }}</span>
+                              </div>
+                            </div>
                             <div class="row input-group-text text-bg-dark">
                                 <label class="col form-label" for="correo">Correo </label>
                                 <input
@@ -66,7 +102,7 @@
                                     <span v-if="error">{{ error }}</span>
                                 </div>
                             </div>
-                            <div class="row input-group-text text-bg-dark">
+                            <div v-if="User.SelectUserType === 'usuario'" class="row input-group-text text-bg-dark">
                                 <label class="col form-label" for="pass">Contraseña </label>
                                 <input
                                 id="pass"
@@ -83,6 +119,24 @@
                                     </span>
                                 </div>
                             </div>
+                            <div v-if="User.SelectUserType === 'invitado'" class="row input-group-text text-bg-dark">
+                              <label class="col form-label" for="correo2">Confirmación de correo </label>
+                              <input
+                              id="correo2"
+                              class="col form-control text-bg-dark"
+                              v-model.trim="User.correo2"
+                              type="email"
+                              name="correo2"
+                              placeholder="email@fundacionamparo.org.mx"
+                              aria-describedby="correo2Help"
+                              >
+                              <div class="col">
+                                  <span id="correo2Help" class="form-text text-bg-dark">
+                                      Confirme su correo oficial.
+                                  </span>
+                                  <span v-if="error">{{ error }}</span>
+                              </div>
+                          </div>
                             <div class="row input-group-text text-bg-dark">
                                 <input
                                 class="btn btn-outline-primary"
@@ -109,7 +163,9 @@ export default {
       User: {
         correo: '',
         pass: '',
-        SelectUserType: 'usuario'
+        SelectUserType: 'usuario',
+        nombre: '',
+        telefono: ''
       },
       error: '',
       showAlertEmail: false,

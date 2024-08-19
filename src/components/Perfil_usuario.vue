@@ -4,43 +4,91 @@
         <div class="col">
           <div class="card text-bg-dark border dark-border-subtle rounded-4">
             <div class="title-card">
-              <h3>Hola {{ user.nombre }}, bienvenido de nuevo</h3>
-              <div class="table table-striped" v-for="(value, key) in user" :key="key">
-                {{ value }}
+              <h3 class="h3">Hola {{ user.nombre }}, bienvenido de nuevo</h3>
+
+              <div class="row">
+                <div class="col">
+                  <ul class="list-group text-bg-dark">
+                    <li class="list-group-item text-bg-dark">
+                      <span class="label">Nombre:</span> <span class="value">{{ user.nombre }}</span>
+                    </li>
+                    <li class="list-group-item text-bg-dark">
+                      <span class="label">Número de registro:</span> <span class="value">{{ user.id }}</span>
+                    </li>
+                    <li class="list-group-item text-bg-dark">
+                      <span class="label">Lugar de trabajo:</span> <span class="value">##Lugar de trabajo##</span>
+                    </li>
+                    <li class="list-group-item text-bg-dark">
+                      <span class="label">Puesto:</span> <span class="value">##Puesto##</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col">
+                  <ul class="list-group text-bg-dark">
+                    <li class="list-group-item text-bg-dark">
+                      <span class="label">Fecha de creación:</span> <span class="value">{{ user.creado_fecha }}</span>
+                    </li>
+                    <li class="list-group-item text-bg-dark">
+                      <span class="label">Fecha de actualización:</span> <span class="value">{{ user.actualizado }}</span>
+                    </li>
+                    <li class="list-group-item text-bg-dark">
+                      <span class="label">Creado por usuario:</span> <span class="value">{{ user.id_creado_usuario }}</span>
+                    </li>
+                    <li class="list-group-item text-bg-dark">
+                      <span class="label">Número de tickets:</span> <span class="value">{{ user.numeroTickets }}</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
+
             <div class="card-body">
-              <table class="table-dark">
+              <table class="table table-dark table-striped">
                 <thead>
-                  <div class="row" v-if="user.numeroTickets === 0">
-                    <button class="btn btn-outline-primary" @click="Nuevo_ticket" type="button">Nuevo ticket</button>
-                  </div>
-                  <div v-else>
-                    <button class="btn btn-outline-primary" @click="LoadTickets" type="button">Mostrar los {{ user.numeroTickets }} tikets</button>
-                    <tr v-if="showTickets">
-                      <td>Título</td>
-                      <td>Estatus</td>
-                      <td>Usuario</td>
-                      <td>Analista</td>
-                      <td>Fecha de solicitud</td>
-                      <td>Centro</td>
-                      <td>Tema</td>
-                      <td>Descripción</td>
-                      <td>Fecha de la última respuesta</td>
-                    </tr>
-                  </div>
-                </thead>
-                <tbody v-if="Tickets === null">
-                  <tr>
-                    <td>Aún no hay tickets.</td>
+                  <tr v-if="showTickets">
+                    <th scope="col">Número</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Estatus</th>
+                    <th scope="col">Fecha de solicitud</th>
+                    <th scope="col">Fecha de la última respuesta</th>
                   </tr>
-                </tbody>
-                <tbody v-else>
-                  <tr v-for="(value, key) in Tickets" :key="key">
-                    <td> {{ value }} </td>
+                </thead>
+                <tbody>
+                  <tr v-if="user.numeroTickets === 0">
+                    <td colspan="9">Aún no hay tickets.</td>
+                  </tr>
+                  <tr v-else v-for="ticket in Tickets" :key="ticket.id">
+                    <td>
+                      <button
+                      class="btn btn-outline-primary"
+                      type="submit"
+                      @click="BuscarTicket"
+                      >
+                        {{ ticket.id }}
+                    </button>
+                    </td>
+                    <td>{{ ticket.titulo }}</td>
+                    <td>##Estatus##</td>
+                    <td>##Fecha##</td>
+                    <td>##Ultima res##</td>
                   </tr>
                 </tbody>
               </table>
+
+              <div class="row" v-if="user.numeroTickets === 0">
+                <button class="btn btn-outline-primary" @click="Nuevo_ticket" type="button">Nuevo ticket</button>
+              </div>
+              <div v-else class="row">
+                <button
+                  v-if="!showTickets"
+                  class="btn btn-outline-primary"
+                  @click="LoadTickets"
+                  type="button"
+                  >
+                  Mostrar los {{ user.numeroTickets }} tickets
+                </button>
+              </div>
+
             </div>
           </div>
         </div>
@@ -51,6 +99,15 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
+  name: 'Perfil_usuario',
+  data () {
+    return {
+      showTickets: false,
+      ticketEstatus: {
+        id: ''
+      }
+    }
+  },
   computed: {
     ...mapState('inicioSesion', ['user']),
     ...mapState('ticket', ['Tickets'])
@@ -62,8 +119,20 @@ export default {
         const id = parseInt(this.user.id)
         const response = await this.fetchTickesByIdUser(id)
         console.log('Response fetchTickesByIdUser::: ', response.data.message)
+        this.showTickets = true
       } catch (error) {
         console.log('Error fetchTickesByIdUser')
+      }
+    },
+    async BuscarTicket () {
+      try {
+        const response = await this.fetchTicketId(this.Tickets.id)
+        if (response.data.message === 'Exito') {
+          console.log('Exito')
+        }
+        this.$router.push('/tickets')
+      } catch {
+        console.log('Error')
       }
     }
   }
@@ -71,4 +140,7 @@ export default {
 </script>
 
 <style>
+.h3 {
+  margin: 30px;
+}
 </style>

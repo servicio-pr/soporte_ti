@@ -1,14 +1,23 @@
 import axios from 'axios'
 import api from '../../config/api'
 const state = {
+  oneTicket: {},
   Tickets: [],
   Ticket: {},
   respuesta: {},
   Respuestas: [],
   showNuevoTicket: true,
-  showEstatusTicket: true
+  showEstatusTicket: true,
+  showAlertTicketNo: false,
+  showAlertTicketOk: false
 }
 const actions = {
+  async AshowAlertTicketNo ({ commit }, status) {
+    commit('SetshowAlertTicketNo', status)
+  },
+  async AshowAlertTicketOk ({ commit }, status) {
+    commit('SetshowAlertTicketOk', status)
+  },
   async nuevoTicket ({ commit }, ticket) {
     try {
       const response = await axios.post(api.url + api.tickets.createTicket, ticket)
@@ -35,7 +44,7 @@ const actions = {
     try {
       const response = await axios.get(api.url + api.tickets.getOneById + TicketId)
       if (response.data.message === 'Exito') {
-        commit('SetTickets', response.data.data)
+        commit('SetOneTicket', response.data.data)
       } else {
         response.data.data = null
       }
@@ -65,14 +74,12 @@ const actions = {
   },
   async fetchResTicketId ({ commit }, ticketId) {
     try {
-      console.log('Antes de api', ticketId)
       const response = await axios.get(api.url + api.tickets.getAllResByTicketId + ticketId)
       if (response.data.message === 'Exito') {
         commit('SetRespuestas', response.data.data)
       } else {
         response.data.data = null
       }
-      console.log('response by id user', response.data.data)
       return response
     } catch (error) {
       console.error('Failed to search Responses by ticket id:', error)
@@ -97,6 +104,9 @@ const mutations = {
   InsertTicket: (state, response) => {
     state.Ticket = response
   },
+  SetOneTicket: (state, oneTicket) => {
+    state.oneTicket = oneTicket
+  },
   SetTickets: (state, ticket) => {
     state.Tickets = ticket
   },
@@ -111,10 +121,17 @@ const mutations = {
   },
   ShowComponentST: (state, value) => {
     state.showEstatusTicket = value
+  },
+  SetshowAlertTicketNo: (state, value) => {
+    state.showAlertTicketNo = value
+  },
+  SetshowAlertTicketOk: (state, value) => {
+    state.showAlertTicketOk = value
   }
 }
 const getters = {
-  Tickets: state => state.Tickets
+  Tickets: state => state.Tickets,
+  oneTicket: state => state.oneTicket
 }
 export default {
   namespaced: true,

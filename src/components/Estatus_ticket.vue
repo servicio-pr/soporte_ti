@@ -2,6 +2,12 @@
   <div class="container-fuid bs-body-bg" v-if="showEstatusTicket">
     <div class="row">
       <div class="col">
+        <div v-if="showAlertTicketOk" class="alert alert-info" role="alert">
+          Ticket {{ oneTicket.id }}, encontrado.
+        </div>
+        <div v-if="showAlertTicketNo" class="alert alert-danger" role="alert">
+          Ticket {{ oneTicket.id }} no encontrado.
+        </div>
         <div class="card text-bg-dark border dark-border-subtle rounded-4">
           <h2 class="card-title">Seguimiento de ticket</h2>
           <div class="card-header">
@@ -16,12 +22,6 @@
                 method = "get"
                 >
                   <div class="row">
-                    <div v-if="showAlertTicketOk" class="alert alert-info" role="alert">
-                      Ticket {{ Tickets.id }}, encontrado.
-                    </div>
-                    <div v-if="showAlertTicketNo" class="alert alert-danger" role="alert">
-                      Ticket {{ Tickets.id }} no encontrado.
-                    </div>
                     <div class="col">
                       <div class="row input-group-text text-bg-dark">
                       <label class="col form-label" for="ticket">Número de ticket </label>
@@ -71,7 +71,7 @@
           </div>
         </div>
         <div class="card text-bg-dark border dark-border-subtle rounded-4">
-          <h2 class="card-title">Ticket número {{ Tickets.id }}</h2>
+          <h2 class="card-title">Ticket número {{ oneTicket.id }}</h2>
           <div class="card-header">
           </div>
           <div class="card-body">
@@ -92,16 +92,16 @@
               </thead>
               <tbody>
                   <tr>
-                    <td :key="Tickets.id"> {{ Tickets.titulo }} </td>
-                    <td :key="Tickets.id"> ##Estatus## </td>
-                    <td :key="Tickets.id"> {{ Tickets.id_contacto }} </td>
-                    <td :key="Tickets.id"> ##Analista## </td>
-                    <td :key="Tickets.id"> ##Fecha## </td>
-                    <td :key="Tickets.id"> {{ Tickets.id_ubicacion }} </td>
-                    <td :key="Tickets.id"> {{ Tickets.id_tema }} </td>
-                    <td :key="Tickets.id"> {{ Tickets.descripcion }} </td>
-                    <td :key="Tickets.id"> ##Fecha## </td>
-                    <td :key="Tickets.id"> {{ Tickets.numeroRespuestas }} </td>
+                    <td :key="oneTicket.id"> {{ oneTicket.titulo }} </td>
+                    <td :key="oneTicket.id"> ##Estatus## </td>
+                    <td :key="oneTicket.id"> {{ oneTicket.id_contacto }} </td>
+                    <td :key="oneTicket.id"> ##Analista## </td>
+                    <td :key="oneTicket.id"> ##Fecha## </td>
+                    <td :key="oneTicket.id"> {{ oneTicket.id_ubicacion }} </td>
+                    <td :key="oneTicket.id"> {{ oneTicket.id_tema }} </td>
+                    <td :key="oneTicket.id"> {{ oneTicket.descripcion }} </td>
+                    <td :key="oneTicket.id"> ##Fecha## </td>
+                    <td :key="oneTicket.id"> {{ oneTicket.numeroRespuestas }} </td>
                   </tr>
               </tbody>
             </table>
@@ -110,41 +110,35 @@
         <div
         id="respuestas"
         class="card text-bg-dark border dark-border-subtle rounded-4"
-        v-if="Tickets.numeroRespuestas > 0"
+        v-if="oneTicket.numeroRespuestas > 0"
         >
-          <h4 class="card-title">Respuestas del ticket número {{ Tickets.id }}</h4>
+          <h4 class="card-title">Respuestas del ticket número {{ oneTicket.id }}</h4>
           <div class="card-header">
           </div>
           <div class="card-body">
-            <table  class="table-dark" id="info">
+            <table  class="table-dark table-striped" id="info">
               <thead>
                   <tr>
+                    <td>Número de respuesta</td>
                     <td>Mensaje</td>
-                    <td>feca</td>
-                    <td>Estatus</td>
+                    <td>fecha</td>
+                    <td>Usuario</td>
                   </tr>
               </thead>
               <tbody>
-                  <tr>
-                    <td :key="Respuestas.id"> {{ Tickets.id }} </td>
-                    <td :key="Respuestas.id"> {{ Tickets.id }} </td>
-                    <td :key="Respuestas.id"> {{ Tickets.id }} </td>
-                    <td :key="Respuestas.id">
-                      <div v-if="Tickets.numeroRespuestas > 0">
-                        <button @click="mostrarRespuestas" class="btn btn-outline-primary">{{ Tickets.numeroRespuestas }}</button>
-                      </div>
-                      <div v-else>
-                        <label>{{ Tickets.numeroRespuestas }}</label>
-                      </div>
-                    </td>
+                  <tr v-for="res in Respuestas" :key="res.id">
+                    <td> {{ res.id }} </td>
+                    <td> {{ res.mensaje }} </td>
+                    <td> {{ res.fecha }} </td>
+                    <td> {{ res.id_usuario }} </td>
                   </tr>
               </tbody>
             </table>
           </div>
         </div>
-        <div class="card text-bg-dark border dark-border-subtle rounded-4">
+        <div v-if="NewRespuesta" class="card text-bg-dark border dark-border-subtle rounded-4">
           <div class="card-header">
-            <h3>Ticket {{ Tickets.id }}</h3>
+            <h3>Ticket {{ oneTicket.id }}</h3>
           </div>
           <div class="card-body">
             <form id="resp"
@@ -202,6 +196,15 @@
           </form>
           </div>
         </div>
+        <div class="card">
+          <button
+          class="btn btn-outline-primary"
+          @click="NewRespuesta = true"
+          v-if="!NewRespuesta"
+          >
+            Agregar Respuesta
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -224,11 +227,12 @@ export default {
         mensaje: '',
         evidencias: '',
         estatus: ''
-      }
+      },
+      NewRespuesta: false
     }
   },
   computed: {
-    ...mapGetters('ticket', ['Tickets']),
+    ...mapGetters('ticket', ['oneTicket']),
     ...mapState('inicioSesion', {
       user: state => state.user
     }),
@@ -237,11 +241,19 @@ export default {
     }),
     ...mapState('ticket', {
       Respuestas: state => state.Respuestas
+    }),
+    ...mapState('ticket', {
+      showAlertTicketNo: state => state.showAlertTicketNo
+    }),
+    ...mapState('ticket', {
+      showAlertTicketOk: state => state.showAlertTicketOk
     })
   },
   methods: {
     ...mapActions('ticket', ['fetchResTicketId']),
     ...mapActions('ticket', ['fetchTicketId']),
+    ...mapActions('ticket', ['AshowAlertTicketNo']),
+    ...mapActions('ticket', ['AshowAlertTicketOk']),
     async BuscarTicket () {
       try {
         const response = await this.fetchTicketId(this.ticketEstatus.id)
@@ -250,14 +262,14 @@ export default {
           email: ''
         }
         if (response.data.data.numeroRespuestas > 0) {
-          await this.fetchResTicketId(this.Tickets.id)
+          await this.fetchResTicketId(this.oneTicket.id)
         }
         if (response.data.message === 'Exito') {
-          this.showAlertTicketNo = false
-          this.showAlertTicketOk = true
+          this.AshowAlertTicketNo(false)
+          this.AshowAlertTicketOk(true)
         } else {
-          this.showAlertTicketNo = true
-          this.showAlertTicketOk = false
+          this.AshowAlertTicketNo(true)
+          this.AshowAlertTicketOk(false)
         }
       } catch (error) {
         console.error('Errror al buscar ticket')
@@ -266,7 +278,7 @@ export default {
     ...mapActions('ticket', ['nuevaRespuesta']),
     async NuevaRespuesta () {
       try {
-        this.respuesta.id_ticket = this.Tickets.id
+        this.respuesta.id_ticket = this.oneTicket.id
         this.respuesta.id_usuario = this.user.id
         console.log('Respuesta antes', this.respuesta)
         await this.nuevaRespuesta(this.respuesta)
@@ -276,6 +288,7 @@ export default {
           evidencias: '',
           estatus: ''
         }
+        this.NewRespuesta = false
       } catch (error) {
         console.error('Error al insertar respuesta:', error)
       }
