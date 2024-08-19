@@ -8,7 +8,7 @@
                         <p>Por favor llene el siguiente formulario para poder comenzar a resolver su inconveniente. </p>
                     </div>
                     <div v-if="showAlertTicketOk" class="alert alert-primary" role="alert">
-                        Ticket creado exitosamente, número: ##numeroTicket##
+                        Ticket creado exitosamente, número: {{ this.Response.id }}
                     </div>
                     <div v-if="showAlertPass" class="alert alert-danger" role="alert">
                       Error al crear el ticket.
@@ -18,6 +18,7 @@
                     @submit.prevent="NuevoTicketForm"
                     accion ="hhtps://vuejs.org/"
                     method = "post"
+                    enctype="multipart/form-data"
                     >
                         <div class="row justify-content-center input-group-text text-bg-dark">
                             <label class="col form-label" for="nombre">Nombre </label>
@@ -85,6 +86,23 @@
                                 </span>
                             </div>
                         </div>
+                        <div class="row justify-content-center input-group-text text-bg-dark">
+                          <label class="col form-label" for="titulo">Titulo </label>
+                          <input
+                          id="titulo"
+                          class="col form-control text-bg-dark"
+                          v-model="Ticket.titulo"
+                          type="text"
+                          name="titulo"
+                          placeholder="Titulo"
+                          required
+                          >
+                          <div class="col">
+                              <span for="titulo" class="scrollable-text form-text text-bg-dark">
+                                  Titulo del problema
+                              </span>
+                          </div>
+                      </div>
                         <div class="row input-group-text text-bg-dark">
                             <label class="col form-label" for="centro">Centro </label>
                             <select
@@ -146,10 +164,11 @@
                         <div class="row input-group-text text-bg-dark">
                             <label class="col form-label" for="file">Evidencias  </label>
                             <input
-                                type="text"
+                                type="file"
                                 class="col form-control text-bg-dark"
                                 id="fileInput"
-                                v-model="Ticket.evidencias"
+                                @change="handleFileUpload"
+                                name="evidencia"
                                 >
                             <div class="col">
                                 <span id="passwordHelpInline" class="form-text text-bg-dark">
@@ -182,20 +201,23 @@ export default {
   data () {
     return {
       Ticket: {
-        nombre: '',
         email: '',
         telefono: '',
         ext: '',
+        titulo: '',
         centroSelect: '',
         temaSelect: '',
         descripcion: '',
-        evidencias: ''
+        evidencia: null
       },
       User: {
         nombre: '',
         correo: '',
         pass: '',
         SelectUserContacto: 'usuario'
+      },
+      Response: {
+        id: ''
       }
     }
   },
@@ -224,17 +246,21 @@ export default {
     ...mapActions('ticket', ['nuevoTicket']),
     async NuevoTicketForm () {
       try {
-        this.Ticket.idUser = this.user.id
-        await this.nuevoTicket(this.Ticket)
+        const Ticket = new FormData()
+        Ticket.append('idUser', this.user.id)
+        Ticket.append('titulo', this.Ticket.titulo)
+        Ticket.append('centroSelect', this.Ticket.centroSelect)
+        Ticket.append('temaSelect', this.Ticket.temaSelect)
+        Ticket.append('descripcion', this.Ticket.descripcion)
+        Ticket.append('estatus', 'abierto')
+        Ticket.append('evidencia', this.evidencia)
+        console.log('Ticket antes', Ticket)
+        const response = await this.nuevoTicket(Ticket)
+        this.Response.id = response
         this.Ticket = {
-          nombre: '',
-          email: '',
-          telefono: '',
-          ext: '',
           centroSelect: '',
           temaSelect: '',
-          descripcion: '',
-          evidencias: ''
+          descripcion: ''
         }
         this.showAlertTicketBad = false
         this.showAlertTicketOk = true
@@ -247,8 +273,10 @@ export default {
       if (this.user) {
         this.User.nombre = this.user.nombre
         this.User.correo = this.user.correo
-        this.isDisabled = true
       }
+    },
+    handleFileUpload (event) {
+      this.evidencia = event.target.files[0]
     }
   },
   mounted () {

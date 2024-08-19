@@ -22,6 +22,7 @@ const actions = {
     try {
       const response = await axios.post(api.url + api.tickets.createTicket, ticket)
       commit('InsertTicket', response)
+      return response.data.insertId
     } catch (error) {
       console.error('Failed to add ticket:', error)
     }

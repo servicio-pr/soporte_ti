@@ -66,6 +66,7 @@
       </div>
     </div>
   </nav>
+  <div class="separator"></div>
   <div class="container-fuid justify-content-center">
     <router-view/>
   </div>
