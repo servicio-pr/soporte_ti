@@ -4,9 +4,7 @@
       <div class="row">
 
         <div class="col-2">
-          <a :href="url_PR">
-            <img :src="logo_PR" alt="Logo Proyecto Roberto" />
-          </a>
+          <img :src="logo_PR" alt="Logo Proyecto Roberto" />
         </div>
 
         <div class="col-2">
@@ -58,9 +56,7 @@
         </div>
 
         <div class="col-1">
-          <a :href="url_PR">
-            <img :src="logo_FA" alt="Logo Fundación Amparo" />
-          </a>
+          <img :src="logo_FA" alt="Logo Fundación Amparo" />
         </div>
 
       </div>

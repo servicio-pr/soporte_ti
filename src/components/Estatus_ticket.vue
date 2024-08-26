@@ -75,36 +75,80 @@
           <div class="card-header">
           </div>
           <div class="card-body">
-            <table  class="table-dark" id="info">
-              <thead>
-                  <tr>
-                    <td>Título</td>
-                    <td>Estatus</td>
-                    <td>Usuario</td>
-                    <td>Analista</td>
-                    <td>Fecha de solicitud</td>
-                    <td>Centro</td>
-                    <td>Tema</td>
-                    <td>Descripción</td>
-                    <td>Fecha de la última respuesta</td>
-                    <td>Numero de respuestas</td>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                    <td :key="oneTicket.id"> {{ oneTicket.titulo }} </td>
-                    <td :key="oneTicket.id"> ##Estatus## </td>
-                    <td :key="oneTicket.id"> {{ oneTicket.id_contacto }} </td>
-                    <td :key="oneTicket.id"> ##Analista## </td>
-                    <td :key="oneTicket.id"> ##Fecha## </td>
-                    <td :key="oneTicket.id"> {{ oneTicket.id_ubicacion }} </td>
-                    <td :key="oneTicket.id"> {{ oneTicket.id_tema }} </td>
-                    <td :key="oneTicket.id"> {{ oneTicket.descripcion }} </td>
-                    <td :key="oneTicket.id"> ##Fecha## </td>
-                    <td :key="oneTicket.id"> {{ oneTicket.numeroRespuestas }} </td>
-                  </tr>
-              </tbody>
-            </table>
+
+            <div class="row">
+              <div class="col">
+                <ul class="list-group text-bg-dark">
+                  <li class="list-group-item text-bg-dark">
+                    <span class="label">Titulo: </span>
+                    <span class="value" :key="oneTicket.id">{{ oneTicket.titulo }}</span>
+                  </li>
+                  <li class="list-group-item text-bg-dark">
+                    <span class="label">Estatus: </span>
+                    <span class="value">{{ oneTicket.estatus }}</span>
+                  </li>
+                  <li class="list-group-item text-bg-dark">
+                    <span class="label">Usuario: </span>
+                    <span class="value">{{ oneTicket.id_contacto }}</span>
+                  </li>
+                  <li class="list-group-item text-bg-dark">
+                    <span class="label">Centro: </span>
+                    <span class="value">{{ oneTicket.id_ubicacion }}</span>
+                  </li>
+                  <li class="list-group-item text-bg-dark">
+                    <span class="label">Tema: </span>
+                    <span class="value">{{ oneTicket.id_tema }}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col">
+                <ul class="list-group text-bg-dark">
+                  <li class="list-group-item text-bg-dark">
+                    <span class="label">Analista: </span>
+                    <span v-if="oneTicket.id_analista === null && user.permiso === 3">
+                      <button
+                      type="button"
+                      class="btn btn-outline-success"
+                      @click="asignarTicket"
+                      >
+                        Asignar ticket
+                      </button>
+                    </span>
+                    <span v-if="oneTicket.id_analista === null">
+                      Sin asignar
+                    </span>
+                    <span>
+                      {{ oneTicket.id_analista }}
+                    </span>
+                  </li>
+                  <li class="list-group-item text-bg-dark">
+                    <span class="label">Fecha de solicitud:</span>
+                    <span class="value">{{ oneTicket.creado_fecha }}</span>
+                  </li>
+                  <li class="list-group-item text-bg-dark">
+                    <span class="label">Descripción: </span>
+                    <span class="value">{{ oneTicket.descripcion }} </span>
+                  </li>
+                  <li class="list-group-item text-bg-dark">
+                    <span class="label">Fecha de la última respuesta:</span>
+                    <span class="value">{{ oneTicket.fecha_respuesta }} </span>
+                  </li>
+                  <li class="list-group-item text-bg-dark">
+                    <span class="label">Numero de respuestas:</span>
+                    <span class="value">{{ oneTicket.numeroRespuestas }} </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <button col
+              type="button"
+              class="btn btn-outline-success"
+              @click="showEvidencia"
+              >
+                Mostrar evidencias
+              </button>
+            </div>
           </div>
         </div>
         <div
@@ -119,18 +163,18 @@
             <table  class="table-dark table-striped" id="info">
               <thead>
                   <tr>
-                    <td>Número de respuesta</td>
-                    <td>Mensaje</td>
-                    <td>fecha</td>
-                    <td>Usuario</td>
+                    <th scope="col">Número de respuesta</th>
+                    <th scope="col">Mensaje</th>
+                    <th scope="col">fecha</th>
+                    <th scope="col">Usuario</th>
                   </tr>
               </thead>
               <tbody>
                   <tr v-for="res in Respuestas" :key="res.id">
-                    <td> {{ res.id }} </td>
-                    <td> {{ res.mensaje }} </td>
-                    <td> {{ res.fecha }} </td>
-                    <td> {{ res.id_usuario }} </td>
+                    <td > {{ res.id }} </td>
+                    <td > {{ res.mensaje }} </td>
+                    <td > {{ res.fecha }} </td>
+                    <td > {{ res.id_usuario }} </td>
                   </tr>
               </tbody>
             </table>
@@ -145,6 +189,7 @@
             @submit.prevent="NuevaRespuesta"
             accion ="hhtps://vuejs.org/"
             method = "post"
+            enctype="multipart/form-data"
             >
             <div class="row">
               <div class="col-sm-10">
@@ -161,11 +206,11 @@
                 <div class="row input-group-text text-bg-dark">
                 <label class="col form-label " for="file">Evidencias:  </label>
                 <input
-                v-model="respuesta.evidencias"
-                    type="text"
+                    type="file"
                     class="col form-control text-bg-dark"
                     id="fileInput"
                     @change="handleFileUpload"
+                    name="evidencia"
                 >
                 </div>
                 <div class="row input-group-text text-bg-dark">
@@ -225,7 +270,7 @@ export default {
         id_ticket: '',
         id_usuario: '',
         mensaje: '',
-        evidencias: '',
+        evidencia: null,
         estatus: ''
       },
       NewRespuesta: false
@@ -254,6 +299,8 @@ export default {
     ...mapActions('ticket', ['fetchTicketId']),
     ...mapActions('ticket', ['AshowAlertTicketNo']),
     ...mapActions('ticket', ['AshowAlertTicketOk']),
+    ...mapActions('ticket', ['AsignarTicket']),
+    ...mapActions('ticket', ['evidenciaTicket']),
     async BuscarTicket () {
       try {
         const response = await this.fetchTicketId(this.ticketEstatus.id)
@@ -275,13 +322,23 @@ export default {
         console.error('Errror al buscar ticket')
       }
     },
+    handleFileUpload (event) {
+      this.evidencia = event.target.files[0]
+    },
+    ClearFile () {
+      this.evidencia = null
+    },
     ...mapActions('ticket', ['nuevaRespuesta']),
     async NuevaRespuesta () {
       try {
-        this.respuesta.id_ticket = this.oneTicket.id
-        this.respuesta.id_usuario = this.user.id
-        console.log('Respuesta antes', this.respuesta)
-        await this.nuevaRespuesta(this.respuesta)
+        const nuevaRespuesta = new FormData()
+        nuevaRespuesta.append('id_usuario', this.user.id)
+        nuevaRespuesta.append('id_ticket', this.oneTicket.id)
+        nuevaRespuesta.append('mensaje', this.respuesta.mensaje)
+        nuevaRespuesta.append('evidencia', this.evidencia)
+        nuevaRespuesta.append('estatus', this.respuesta.estatus)
+        console.log('NewRespuesta', nuevaRespuesta)
+        await this.nuevaRespuesta(nuevaRespuesta)
         this.respuesta = {
           id: '',
           mensaje: '',
@@ -289,8 +346,35 @@ export default {
           estatus: ''
         }
         this.NewRespuesta = false
+        this.ClearFile()
       } catch (error) {
         console.error('Error al insertar respuesta:', error)
+      }
+    },
+    async asignarTicket () {
+      try {
+        const asignar = {
+          idTicket: this.oneTicket.id,
+          idUser: this.user.id
+        }
+        const response = await this.AsignarTicket(asignar)
+        if (response) {
+          console.log('Todo bien')
+        }
+      } catch (error) {
+        console.log('Error: ', error)
+      }
+    },
+    async showEvidencia () {
+      try {
+        const evidenciaTicket = await this.evidenciaTicket(this.oneTicket.id)
+        if (evidenciaTicket) {
+          console.log('Evidencias: --', evidenciaTicket)
+        } else {
+          console.log('Error: --', evidenciaTicket)
+        }
+      } catch (error) {
+        console.log()
       }
     }
   }

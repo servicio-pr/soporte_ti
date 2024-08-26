@@ -9,7 +9,10 @@ const state = {
   showNuevoTicket: true,
   showEstatusTicket: true,
   showAlertTicketNo: false,
-  showAlertTicketOk: false
+  showAlertTicketOk: false,
+  permiso: '',
+  asignarAnalista: '',
+  evidencas: []
 }
 const actions = {
   async AshowAlertTicketNo ({ commit }, status) {
@@ -64,13 +67,60 @@ const actions = {
       console.error('Failed to search ticket id:', error)
     }
   },
+  async fetchAllTicketsSinAnalista ({ commit }) {
+    try {
+      const response = await axios.get(api.url + api.tickets.getAllWithoutAnalist)
+      if (response.data.message === 'Exito') {
+        commit('SetTickets', response.data.data)
+      } else {
+        response.data.data = null
+      }
+      console.log('response by id user', response.data.data)
+      return response
+    } catch (error) {
+      console.error('Failed to search ticket without analist:', error)
+    }
+  },
+  async fetchAllTicketsAnalista ({ commit }, userId) {
+    try {
+      const response = await axios.get(api.url + api.tickets.getAllWithAnalist + userId)
+      if (response.data.message === 'Exito') {
+        commit('SetTickets', response.data.data)
+      } else {
+        response.data.data = null
+      }
+      console.log('response by id user', response.data.data)
+      return response
+    } catch (error) {
+      console.error('Failed to search ticket by id user:', error)
+    }
+  },
   async nuevaRespuesta ({ commit }, respuesta) {
     try {
-      console.log(respuesta)
       const response = await axios.post(api.url + api.tickets.nuevaRespuesta, respuesta)
       commit('InsertRespuesta', response)
+      const message = 'Exito'
+      response.message = message
+      return response
     } catch (error) {
       console.log('Error insertando respuesta', error)
+    }
+  },
+  async AsignarTicket ({ commit }, asignar) {
+    const response = await axios.post(api.url + api.tickets.asignarAnalista, asignar)
+    commit('InsertAsignar', response)
+    const message = 'Exito'
+    response.message = message
+    return (response)
+  },
+  async evidenciaTicket ({ commit }, idTicket) {
+    try {
+      const response = await axios.get(api.url + api.tickets.getEvidencias + idTicket)
+      commit('SetEvidencia', response)
+      const message = 'Exito'
+      response.message = message
+    } catch (error) {
+      console.log('Error get evidencias', error)
     }
   },
   async fetchResTicketId ({ commit }, ticketId) {
@@ -117,6 +167,9 @@ const mutations = {
   InsertRespuesta: (state, res) => {
     state.respuesta = (res)
   },
+  SetEvidencia: (state, res) => {
+    state.evidencas = (res)
+  },
   ShowComponentNT: (state, value) => {
     state.showNuevoTicket = value
   },
@@ -128,6 +181,9 @@ const mutations = {
   },
   SetshowAlertTicketOk: (state, value) => {
     state.showAlertTicketOk = value
+  },
+  InsertAsignar: (state, value) => {
+    state.asignarAnalista = value
   }
 }
 const getters = {

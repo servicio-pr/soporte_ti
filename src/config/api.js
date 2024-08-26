@@ -2,13 +2,17 @@ export default {
   url: 'http://localhost:8000',
   tickets: {
     default: '/',
-    getAll: '/tickets/getAll',
+    getAll: '/tickets/getAll/',
+    getAllWithoutAnalist: '/tickets/getAllWithoutAnalist/',
+    getAllWithAnalist: '/tickets/getAllWithAnalist/',
     getOneById: '/tickets/getOneById/',
     getAllByIdUser: '/tickets/getAllByIdUser/',
     getOneByEmail: '/tickets/getOneByEmail/',
     getAllResByTicketId: '/tickets/getAllResByTicketId/',
+    getEvidencias: '/tickets/getEvidencias/',
     createTicket: '/tickets/createTicket',
-    nuevaRespuesta: '/tickets/nuevaRespuesta'
+    nuevaRespuesta: '/tickets/nuevaRespuesta',
+    asignarAnalista: '/tickets/asignarAnalista'
   },
   centro: {
     default: '/centro',

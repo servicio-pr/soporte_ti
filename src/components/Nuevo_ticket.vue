@@ -74,7 +74,7 @@
                             <input
                             id="ext"
                             class="col form-control text-bg-dark"
-                            v-model="User.ext"
+                            v-model="User.EXT"
                             type="text"
                             name="number"
                             placeholder="123"
@@ -264,6 +264,7 @@ export default {
         }
         this.showAlertTicketBad = false
         this.showAlertTicketOk = true
+        this.ClearFile()
       } catch (error) {
         this.showAlertTicketBad = true
         this.showAlertTicketOk = false
@@ -277,6 +278,9 @@ export default {
     },
     handleFileUpload (event) {
       this.evidencia = event.target.files[0]
+    },
+    ClearFile () {
+      this.evidencia = null
     }
   },
   mounted () {
@@ -284,6 +288,7 @@ export default {
       this.fetchTemas()
       this.fetchCentros()
       this.precargaDatosUser()
+      this.$forceUpdate()
     } catch (error) {
       console.log('Error fetch temas y centro', error)
     }
