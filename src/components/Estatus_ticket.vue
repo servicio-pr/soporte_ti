@@ -140,15 +140,6 @@
                 </ul>
               </div>
             </div>
-            <div class="row">
-              <button col
-              type="button"
-              class="btn btn-outline-success"
-              @click="showEvidencia"
-              >
-                Mostrar evidencias
-              </button>
-            </div>
           </div>
         </div>
         <div
@@ -175,6 +166,20 @@
                     <td > {{ res.mensaje }} </td>
                     <td > {{ res.fecha }} </td>
                     <td > {{ res.id_usuario }} </td>
+                    <td v-if="!showEvidenciaImg" >
+                      <button col
+                        type="button"
+                        class="btn btn-outline-success"
+                        @click="showEvidencia(res)"
+                        >
+                        Mostrar evidencias
+                      </button>
+                    </td>
+                    <td v-else>
+                      <div>
+                        <img :src="imagenUrl" alt="Imagen desde el servidor">
+                      </div>
+                    </td>
                   </tr>
               </tbody>
             </table>
@@ -273,7 +278,9 @@ export default {
         evidencia: null,
         estatus: ''
       },
-      NewRespuesta: false
+      NewRespuesta: false,
+      imagenUrl: '',
+      showEvidenciaImg: false
     }
   },
   computed: {
@@ -365,17 +372,12 @@ export default {
         console.log('Error: ', error)
       }
     },
-    async showEvidencia () {
-      try {
-        const evidenciaTicket = await this.evidenciaTicket(this.oneTicket.id)
-        if (evidenciaTicket) {
-          console.log('Evidencias: --', evidenciaTicket)
-        } else {
-          console.log('Error: --', evidenciaTicket)
-        }
-      } catch (error) {
-        console.log()
-      }
+    async showEvidencia (res) {
+      const buffer = res.evidencia.data
+      const mimeType = res.evidencia.type
+      const base64String = btoa(String.fromCharCode(...new Uint8Array(buffer)))
+      this.imagenUrl = `data:${mimeType};base64,${base64String}`
+      this.showEvidenciaImg = true
     }
   }
 }

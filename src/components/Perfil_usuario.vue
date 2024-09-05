@@ -162,8 +162,7 @@ export default {
     async LoadTickets () {
       try {
         const id = parseInt(this.user.id)
-        const response = await this.fetchTickesByIdUser(id)
-        console.log('Response fetchTickesByIdUser::: ', response.data.message)
+        await this.fetchTickesByIdUser(id)
         this.showTickets = true
       } catch (error) {
         console.log('Error fetchTickesByIdUser')
@@ -171,10 +170,10 @@ export default {
     },
     async BuscarTicket (id) {
       try {
-        console.log('Ticket id:', id)
         const response = await this.fetchTicketId(id)
         if (response.data.data.numeroRespuestas > 0) {
-          await this.fetchResTicketId(this.oneTicket.id)
+          await this.fetchResTicketId(id)
+          console.log('Res::', this.Respuestas)
         }
         await this.showComponentST(true)
         await this.showComponentNT(false)
@@ -190,8 +189,7 @@ export default {
     },
     async TicketsSinAnalista () {
       try {
-        const response = await this.fetchAllTicketsSinAnalista()
-        console.log('Response fetchTickesByIdUser::: ', response.data.message)
+        await this.fetchAllTicketsSinAnalista()
         this.showTickets = true
       } catch (error) {
         console.log('Error fetchAllTicketsSinAnalista')
@@ -200,8 +198,7 @@ export default {
     async getTicketsAsignados () {
       try {
         const id = parseInt(this.user.id)
-        const response = await this.fetchAllTicketsAnalista(id)
-        console.log('Response fetchTickesByAnalist::: ', response.data.message)
+        await this.fetchAllTicketsAnalista(id)
         this.showTickets = true
       } catch (error) {
         console.log('Error fetchAllTicketsAnalista')
